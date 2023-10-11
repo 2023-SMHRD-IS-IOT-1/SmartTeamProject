@@ -14,8 +14,8 @@ app.use(express.json());
 app.use(cors());
 
 app.set("port", process.env.PORT || 3333);
-
 app.set("view engine", "html");
+
 nunjucks.configure("views", {
   express: app,
   watch: true,
