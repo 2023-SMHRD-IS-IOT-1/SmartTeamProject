@@ -6,3 +6,5 @@ PW : smhrd3
 URL(호스트이름) project-db-campus.smhrd.com  
 포트번호 3307  
 DB 유저명  
+
+# 기본 틀 오류가 있어서 push 했습니다! 
