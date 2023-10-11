@@ -1,4 +1,5 @@
 const express = require("express");
+const { route } = require("../../Project_File copy/routes");
 const router = express.Router();
 
 // Main Page 열기
@@ -26,14 +27,20 @@ router.get("/dataAnalysis",(req,res)=>{
   res.render("dataAnalysis")
 })
 
-//로그인하기
+// 로그인하기
 router.get("/login", (req, res) => {
   res.render("login");
 });
 
-//로그아웃하기
+// 로그아웃하기
 router.get("/logout", (req, res) => {
   res.render("logout");
 });
+
+
+// 회원가입하기
+router.get('/register',(req,res) => {
+  res.render("register")
+})
 
 module.exports = router;
