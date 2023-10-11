@@ -23,7 +23,7 @@ router.get("/itemmanage", (req, res) => {
 
 // 데이버 분석 Page 열기
 router.get("/dataAnalysis",(req,res)=>{
-  res.render("charts")
+  res.render("dataAnalysis")
 })
 
 //로그인하기
