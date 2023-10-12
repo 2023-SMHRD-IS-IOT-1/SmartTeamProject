@@ -1,15 +1,17 @@
 {
   "name": "project_file",
   "version": "1.0.0",
-  "description": "",
+  "description": "USER : campus_23IS_IoT1_hack_3  \r PW : smhrd3  \r 서버종류 캠퍼스 mysql 8.0.26  \r URL(호스트이름) project-db-campus.smhrd.com  \r 포트번호 3307  \r DB 유저명",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.2",
     "chokidar": "^3.5.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -21,5 +23,6 @@
     "router": "^1.3.8",
     "routes": "^2.1.0",
     "session-file-store": "^1.5.0"
-  }
+  },
+  "devDependencies": {}
 }
