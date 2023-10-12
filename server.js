@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const nunjucks = require("nunjucks");
 const session = require("express-session");
 const fileStore = require("session-file-store")(session);
+
+// 라우터 연결
 const indexRouter = require("./routes");
 const userRouter = require("./routes/user");
 
@@ -27,6 +29,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.use(
   session({
+    saveUninitialized:false,
     httpOnly: true,
     resave: false,
     secret: "secret",
