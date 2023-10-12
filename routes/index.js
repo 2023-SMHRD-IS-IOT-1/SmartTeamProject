@@ -43,4 +43,9 @@ router.get('/register',(req,res) => {
   res.render("register")
 })
 
+// 회원가입하기
+router.get('/myPage',(req,res) => {
+  res.render("myPage")
+})
+
 module.exports = router;
