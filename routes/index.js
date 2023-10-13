@@ -5,9 +5,13 @@ const router = express.Router();
 router.get("/", (req, res) => {
   // template engine안에서 내가 원하는 데이터를 사용하고 싶으면?
   // res.render("파일명", {속성: 보낼 데이터});
-  res.render('index', {obj: req.session.user})
+  // res.render('index', {obj: req.session.user})
   // => index라는 파일 안에서 obj라는 변수이름으로 해당 값을 사용하겠다는 의미
   //index안에는 banner, mypage, layout이 포함
+  
+  // 메인 페이지
+    // console.log('session: ',req.session.u_id)
+    res.render('index', {obj: req.session.m_id})
 });
 
 // 회원가입 Page 열기
