@@ -11,8 +11,8 @@ router.get("/", (req, res) => {
 });
 
 // 회원가입 Page 열기
-router.get("/join", (req, res) => {
-  res.render("join");
+router.get("/register", (req, res) => {
+  res.render("register");
 });
 
 // 상품 관리 Page 열기
@@ -32,16 +32,42 @@ router.get("/login", (req, res) => {
 });
 
 //로그아웃하기
-router.get("/logout", (req, res) => {
-  res.render("logout");
+// router.get("/login", (req, res) => {
+//   res.render("logout");
+// });
+//마이페이지
+router.get("/myPage", (req, res) => {
+  res.render("myPage");
 });
 
+
+// 리액트로 보낼 센서데이터 
+let sendSensorData = undefined ;
+
 // 아두이노 와이파이 테스트
+// 아두이노 => 노드 
 router.post('/arduinoData', ( req,res ) => { 
-  const sensorData = req.body
-
-  console.log( sensorData );
-
+  // 아두이노의 데이터 >> req.body
+  // sensorData 변수에 저장
+  sendSensorData = req.body;
  } )
+
+// 마이페이지
+router.get('/myPage',(req,res) => {
+  res.render("myPage")
+})
+ // 노드 => 리액트 
+ router.post('/sendArduinoDataToReact', (req, res)=>{
+  console.log('react router', sendSensorData)
+  if(sendSensorData){
+    res.json({sendSensorData : sendSensorData})
+  }
+
+ })
+
+// 회원가입하기
+router.get('/register',(req,res) => {
+  res.render("register")
+})
 
 module.exports = router;
