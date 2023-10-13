@@ -11,8 +11,8 @@ router.get("/", (req, res) => {
 });
 
 // 회원가입 Page 열기
-router.get("/join", (req, res) => {
-  res.render("join");
+router.get("/register", (req, res) => {
+  res.render("register");
 });
 
 // 상품 관리 Page 열기
@@ -32,8 +32,12 @@ router.get("/login", (req, res) => {
 });
 
 //로그아웃하기
-router.get("/logout", (req, res) => {
-  res.render("logout");
+// router.get("/login", (req, res) => {
+//   res.render("logout");
+// });
+//마이페이지
+router.get("/myPage", (req, res) => {
+  res.render("myPage");
 });
 
 
@@ -48,6 +52,10 @@ router.post('/arduinoData', ( req,res ) => {
   sendSensorData = req.body;
  } )
 
+// 마이페이지
+router.get('/myPage',(req,res) => {
+  res.render("myPage")
+})
  // 노드 => 리액트 
  router.post('/sendArduinoDataToReact', (req, res)=>{
   console.log('react router', sendSensorData)
@@ -56,5 +64,10 @@ router.post('/arduinoData', ( req,res ) => {
   }
 
  })
+
+// 회원가입하기
+router.get('/register',(req,res) => {
+  res.render("register")
+})
 
 module.exports = router;

@@ -1,3 +1,5 @@
+<!-- 회원가입 페이지 -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,13 +32,13 @@
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-3 d-none d-lg-block"></div>
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">회원가입</h1>
                             </div>
-                            <form class="user">
+                            <form class="user" action="/join" method="post">
                                 <h6>*필수 입력사항</h6>
                                 <div class="form-group">
                                     <input type="name" class="form-control form-control-user" id="exampleInputEmail"
@@ -83,7 +85,6 @@
                                     회원가입
                                 </a>
                             </form>
-
                             <hr>
                             <div class="text-center">
                                 <a class="small" href="/login">계정이 있다면 로그인을 해주세요!</a>
