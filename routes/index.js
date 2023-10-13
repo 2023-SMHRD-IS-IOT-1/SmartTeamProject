@@ -56,14 +56,6 @@ router.post('/arduinoData', ( req,res ) => {
 router.get('/myPage',(req,res) => {
   res.render("myPage")
 })
- // 노드 => 리액트 
- router.post('/sendArduinoDataToReact', (req, res)=>{
-  console.log('react router', sendSensorData)
-  if(sendSensorData){
-    res.json({sendSensorData : sendSensorData})
-  }
-
- })
 
 // 회원가입하기
 router.get('/register',(req,res) => {
