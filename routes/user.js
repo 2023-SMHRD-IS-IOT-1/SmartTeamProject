@@ -21,8 +21,8 @@ router.post("/register", (req, res) => {
     // 본격적으로 DB연동하기 전에, 테이블을 생성해야한다.
 
     // 3. DB 연결 작업 => insert into 테이블명 values (아이디, 비번, 이름, 주소)
-    let sql_m = "insert into members values(?,?,?,?)";
-    let sql_s = "insert into stores values(?,?,?,?)";
+    let sql_m = "insert into members(m_id, m_pw, m_name, m_phone) values(?,?,?,?)";
+    let sql_s = "insert into stores(store_name, store_owner, store_phone, store_loc) values(?,?,?,?)";
 
 
 
@@ -30,7 +30,7 @@ router.post("/register", (req, res) => {
     // 오류가 난다? is not defined <-그 부분이 오타
     // 오류x, rows에 undefined? <-sql문 오류(테이블명이 틀렸거나, 테이블이 없거나)
     conn.query(sql_m, [m_id, m_pw, m_name, m_phone], (err, rows) => {  //DB에 있는 것이 아닌 1번의 변수다
-
+      console.log("err :",err);
       console.log('회원가입 결과', rows)
       if (rows) {
         console.log('회원가입 성공')
@@ -50,10 +50,10 @@ router.post("/register", (req, res) => {
         `)
       }
     })
-    // conn.query(sql_s,[store_name,store_owner,store_phone,store_loc],(err,rows)=>{
-    //   console.log('매장 정보', rows)
+    conn.query(sql_s,[store_name,store_owner,store_phone,store_loc],(err,rows)=>{
+      console.log('매장 정보', rows)
 
-    // })
+    })
 
     // 4. 만약 회원가입에 성공하면 alert로 회원가입 성공! => 메인창 이동
     // 5. 만약 회원가입에 실패하면 alert로 회원가입 실패 ... => 회원가입 창으로 이동
