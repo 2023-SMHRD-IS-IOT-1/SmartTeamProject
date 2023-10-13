@@ -24,8 +24,8 @@ router.get('/',(req,res)=>{
 })
 
 // 1) 세션 생성하기
-router.get('/set' ,(req,res)=>{
-    req.session.name="이다현";
+router.get('/' ,(req,res)=>{
+    // req.session.name="이다현";
     req.session.save(()=>{ //콜백함수 이용
         /*순서정하기 위해 사용할 수 있는 방법
         (JS문법- js는 문법이 순차적으로 진행되지 x)
