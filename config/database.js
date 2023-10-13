@@ -9,11 +9,7 @@ let conn = mysql.createConnection({
   user: "campus_23IS_IoT1_hack_3",
   password: "smhrd3",
   port: 3307,
-<<<<<<< HEAD
   database: "campus_23IS_IoT1_hack_3"
-=======
-  database: "campus_23IS_IoT1_hack_3",
->>>>>>> 20d8aefa33fa30aa39c9d875eb8e468038073d1c
 });
 
 conn.connect();

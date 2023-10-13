@@ -1,0 +1,29 @@
+@media (min-width: 576px) {
+    .shelf {
+        width: auto;
+
+    }
+
+    .shelf1 {
+        margin-left: 25%;
+
+
+    }
+
+    .shelf2 {
+        width: 200%;
+
+    }
+
+    .cnt {
+        font-size: xx-large;
+    }
+
+    .graph1 {
+        width: 100%;
+        display: grid;
+    }
+    .chart-area {
+        height: 22rem;
+      }
+}
