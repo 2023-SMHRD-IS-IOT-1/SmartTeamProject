@@ -1,4 +1,72 @@
+<!-- 마이 페이지-->
+
 {% extends "layout.html" %}
 {% block content %}
-<p>나의 페이지</p>
+<!-- <p>마이 페이지</p> -->
+
+<div class="container">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-3 d-none d-lg-block"></div>
+                <div class="col-lg-7">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">회원 정보</h1>
+                        </div>
+                        <form class="user">
+                            <div class="form-group">
+                                <input type="name" class="form-control form-control-user" id="exampleInputEmail"
+                                    placeholder="*이름">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control form-control-user" id="exampleInputEmail"
+                                    placeholder="*이메일">
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input type="password" class="form-control form-control-user"
+                                        id="exampleInputPassword" placeholder="*비밀번호 입력">
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="password" class="form-control form-control-user"
+                                        id="exampleRepeatPassword" placeholder="*비밀번호 재입력">
+                                </div>
+                            </div>
+                        </form>
+                        <hr>
+                        <form class="user">
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input type="password" class="form-control form-control-user"
+                                        id="exampleInputPassword" placeholder="매장명">
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="password" class="form-control form-control-user"
+                                        id="exampleRepeatPassword" placeholder="대표자명">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="name" class="form-control form-control-user" id="exampleInputEmail"
+                                    placeholder="매장 번호">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control form-control-user" id="exampleInputEmail"
+                                    placeholder="매장 주소">
+                            </div>
+                            
+                            <a href="" class="btn btn-primary btn-user btn-block">
+                                
+                                수정
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 {% endblock %}

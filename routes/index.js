@@ -35,6 +35,10 @@ router.get("/login", (req, res) => {
 router.get("/logout", (req, res) => {
   res.render("logout");
 });
+//마이페이지
+router.get("/myPage", (req, res) => {
+  res.render("myPage");
+});
 
 
 // 리액트로 보낼 센서데이터 
