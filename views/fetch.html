@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+<hr />
+<h3>Fetch를 활용해서 데이터 주고 받기</h3>
+<button type="button" class="btn btn-primary" onclick="linkData()">connect!</button>
+<script>
+    const linkData = () => {
+        console.log('link data click')
+        let url="http://localhost:3333/connect/led"
+        fetch(url, {
+            method: "POST",
+            headers:{ //데이터를 어떤 타입으로 보내줄 건지? json
+                "Content-Type": "application/json"
+            },
+            body:JSON.stringify({ //내가 보낼 데이터
+                led: "on",  //**front에서 back으로 보낼 데이터
+                date: new Date() //**front에서 back으로 보낼 데이터
+
+
+            })
+        })
+        .then(res=>res.json())
+        .then(res=>{
+            // res안에 node.js에서 보내온 데이터가 있음
+            console.log('res:', res)
+        });
+    };
+
+</script>
+{% endblock %}
