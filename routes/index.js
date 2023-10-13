@@ -41,8 +41,7 @@ router.post('/arduinoData', ( req,res ) => {
   const sensorData = req.body
 
   console.log( sensorData );
-  res.write('Hello')
-  
+
  } )
 
 module.exports = router;
