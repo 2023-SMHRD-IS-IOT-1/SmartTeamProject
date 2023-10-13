@@ -45,4 +45,14 @@ router.post('/arduinoData', ( req,res ) => {
   
  } )
 
+// 마이페이지
+router.get('/myPage',(req,res) => {
+  res.render("myPage")
+})
+
+// 회원가입하기
+router.get('/register',(req,res) => {
+  res.render("register")
+})
+
 module.exports = router;
