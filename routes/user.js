@@ -21,8 +21,8 @@ router.post("/register", (req, res) => {
     // 본격적으로 DB연동하기 전에, 테이블을 생성해야한다.
 
     // 3. DB 연결 작업 => insert into 테이블명 values (아이디, 비번, 이름, 주소)
-    let sql_m = "insert into members values(?,?,?,?)";
-    let sql_s = "insert into stores values(?,?,?,?)";
+    let sql_m = "insert into members (m_id, m_pw, m_name, m_phone) values(?,?,?,?)";
+    // let sql_s = "insert into stores values(?,?,?,?)";
 
 
 
