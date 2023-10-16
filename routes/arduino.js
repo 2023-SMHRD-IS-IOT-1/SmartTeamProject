@@ -28,14 +28,15 @@ router.post('/sendData', (req, res) => {
     // i 번의 선반 무게 : receiveSensorData[row[i].shelf_loc]
     // i 번의 DB에 저장된 수량 : row[i].p_cnt
     for (let i = 0; i < row.length; i++) {
+            // row 는 DB에서 받아온 데이터
       let p_cnt = row[i].p_cnt
       let p_code = row[i].p_code
       let p_name = row[i].p_name
       let p_weight = row[i].p_weight
       let shelf_loc = row[i].shelf_loc
-      let isSensorCount = Math.round(receiveSensorData[row[i].shelf_loc] / row[i].p_weight)
-      // console.log("선반 무게 :", receiveSensorData[row[i].shelf_loc]);
-      // console.log("개별 무게 :", row[i].p_weight);
+      let isSensorCount = Math.round(receiveSensorData[shelf_loc] / p_weight)
+      // console.log("선반 무게 :", receiveSensorData[shelf_loc]);
+      // console.log("개별 무게 :", p_weight);
       // console.log("선반 수량 :", isSensorCount);
       if (isSensorCount != p_cnt) {
         let isSendCountDataSql = 'UPDATE products SET p_cnt = ? WHERE store_code = ? AND shelf_loc = ?'
