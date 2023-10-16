@@ -48,11 +48,11 @@ router.post('/sendData', (req, res) => {
           }
         })
         // 출고 sql 정의
-        let isSendShipmentDataSql = 'INSERT INTO shipments ( p_code, ship_type, ship_cnt, store_code ) VALUES ( ?, ?, ?, ? )'
+        let isSendShipmentDataSql = 'INSERT INTO shipments ( p_code, ship_type, ship_cnt ) VALUES ( ?, ?, ? )'
         // 입출고 타입 정의
         let ship_type = p_cnt - isSensorCount > 0 ? "O" : "I"
-        
-        conn.query(isSendShipmentDataSql, [p_code, ship_type, Math.abs(p_cnt - isSensorCount), store_code], (err, row) => {
+
+        conn.query(isSendShipmentDataSql, [p_code, ship_type, Math.abs(p_cnt - isSensorCount)], (err, row) => {
           console.log("isSendShipmentDataSql row:", row);
           if (row.affectedRows > 0) {
             console.log(store_code + ' 번 매장의 ' + p_name + ' 상품의 출고 기록 성공')
