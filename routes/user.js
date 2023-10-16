@@ -11,46 +11,47 @@ router.post("/register", (req, res) => {
 	if (m_id && m_pw && m_name && m_phone) {
 		// 회원가입 정보 저장
 		if (m_pw === m_pw2) {
-			conn.query(sql_m, [m_id, m_pw, m_name, m_phone], (err, rows) => {
-				console.log('err: ', err);
-				if (err) {
-					console.log('회원가입 실패')
-					res.send(`
+			if (store_name && store_owner && store_phone && store_loc || !store_name && !store_owner && !store_phone && !store_loc) {
+				conn.query(sql_m, [m_id, m_pw, m_name, m_phone], (err, rows) => {
+					console.log('err: ', err);
+					if (err) {
+						console.log('회원가입 실패')
+						res.send(`
                   <script>
                       alert('이미 사용 중인 아이디입니다.');
                       location.href="http://localhost:3333/register";
                   </script>
               `);
-				} else {
-					console.log('rows', rows);
-					if (rows.affectedRows > 0) {
-						console.log('회원가입 성공');
-						// 3. 매장 정보 저장
+					} else {
 						conn.query(sql_s, [store_name, store_owner, store_phone, store_loc, m_id], (err, rows) => {
-							if (err) {
-								console.log('매장정보 저장 실패');
-								console.log('매장err:', err);
-
-							} else {
-								console.log('회원가입 및 매장 정보 입력 성공');
+							if (rows.affectedRows > 0) {
+								console.log('매장정보 입력 성공');
 								res.send(`
-													<script>
-															alert('가입을 축하합니다!');
-															location.href="http://localhost:3333/login";
-													</script>
-																`);
+							<script>
+							alert('가입을 축하합니다!');
+							location.href="http://localhost:3333/login";
+							</script>
+							`);
+								console.log('회원가입 성공');
 							}
 						});
 					}
-				}
-			});
+				})
+			} else
+				res.send(`
+							<script>
+								alert('매장 정보를 모두 입력해주시기 바랍니다.');
+								location.href="http://localhost:3333/register";
+							</script>
+						`);
+			console.log('매장정보 부재');
 		} else {
 			res.send(`
           <script>
               alert('비밀번호가 일치하지 않습니다!');
               location.href="http://localhost:3333/register";
           </script>
-      `);
+     				 `);
 		}
 	} else {
 		res.send(`
@@ -75,38 +76,38 @@ router.post("/login", (req, res) => {
 	conn.query(sql_m, [m_id, m_pw], (err, m_rows) => {
 		// console.log(rows)
 		if (m_rows.length > 0) { //if(rows)가 안되는 이유: rows는 로그인에 실패해도 뜸
-			conn.query(sql_s,[m_id],(err,s_rows)=>{
-			if (s_rows.length>0){
-			console.log('로그인 성공')
-			req.session.user =m_rows[0];
-			req.session.store =s_rows[0];
-			console.log('회원 세션 정보: ',req.session.user);
-			console.log('매장 세션 정보: ',req.session.store);
+			conn.query(sql_s, [m_id], (err, s_rows) => {
+				if (s_rows.length > 0) {
+					console.log('로그인 성공')
+					req.session.user = m_rows[0];
+					req.session.store = s_rows[0];
+					console.log('회원 세션 정보: ', req.session.user);
+					console.log('매장 세션 정보: ', req.session.store);
 
-			}else{
-				console.log('매장 정보 부재')
-			}
-			// req.session.name=rows[0].username;
-			
-			//      4-2) 로그인이 성공했다면, 해당 유저의 정보를 세션에 저장 (id, nick, address)
-			//      4-3) 환영합니다! alert => 메인으로 이동
-			// 5. 데이터가 존재하지 않는다면 로그인 실패
-			req.session.save(() => {
+				} else {
+					console.log('매장 정보 부재')
+				}
+				// req.session.name=rows[0].username;
 
-				res.send(`
+				//      4-2) 로그인이 성공했다면, 해당 유저의 정보를 세션에 저장 (id, nick, address)
+				//      4-3) 환영합니다! alert => 메인으로 이동
+				// 5. 데이터가 존재하지 않는다면 로그인 실패
+				req.session.save(() => {
+
+					res.send(`
 						<script>
 						alert("${m_rows[0].m_name}님 환영합니다.");location.href="/"
 						</script>>`)
+				})
 			})
-		})
-			} else {
-				console.log('로그인 실패')
-				res.send(`
+		} else {
+			console.log('로그인 실패')
+			res.send(`
 			<script>
 			alert("아이디 혹은 비밀번호를 다시 확인해주시기 바랍니다.");location.href="/login"
 			</script>`);
-			
-			}
+
+		}
 	})
 })
 
@@ -116,7 +117,7 @@ router.get("/logout", (req, res) => {
 	req.session.user = ""
 	req.session.store = ""
 
-	console.log("session:",req.session)
+	console.log("session:", req.session)
 	req.session.save(() => {
 		res.send(
 			`<script>
