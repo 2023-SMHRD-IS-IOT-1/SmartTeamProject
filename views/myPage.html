@@ -20,7 +20,7 @@
 
                                 <div class="form-group">
                                     <input type="name" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="아이디">
+                                        placeholder="아이디">{{data.user.m_id}}->placeholder는 렌더링 템플릿 문법 사용하는 것이 일반적으로 작동 하지 X
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
@@ -34,11 +34,11 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="name" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="이름">
+                                        placeholder="이름">{{data.user.m_name}}
                                 </div>
                                 <div class="form-group">
                                     <input type="phone" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="전화번호">
+                                        placeholder="전화번호">{{data.user.m_phone}}
                                 </div>
                             </form>
                             <hr>
@@ -47,20 +47,20 @@
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <input type="password" class="form-control form-control-user"
-                                        id="exampleInputPassword" placeholder="매장명">
+                                        id="exampleInputPassword" placeholder="매장명">{{data.store.store_name}}
                                 </div>
                                 <div class="col-sm-6">
                                     <input type="password" class="form-control form-control-user"
-                                        id="exampleRepeatPassword" placeholder="대표자명">
+                                        id="exampleRepeatPassword" placeholder="대표자명">{{data.store.store_owner}}
                                 </div>
                             </div>
                             <div class="form-group">
                                 <input type="name" class="form-control form-control-user" id="exampleInputEmail"
-                                    placeholder="매장 번호">
+                                    placeholder="매장 번호">{{data.store.store_phone}}
                             </div>
                             <div class="form-group">
                                 <input type="email" class="form-control form-control-user" id="exampleInputEmail"
-                                    placeholder="매장 주소">
+                                    placeholder="매장 주소">{{data.store.store_loc}}
                             </div>
                             
                             <a href="" class="btn btn-primary btn-user btn-block">

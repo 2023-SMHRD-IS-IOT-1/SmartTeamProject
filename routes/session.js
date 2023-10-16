@@ -24,8 +24,8 @@ router.get('/',(req,res)=>{
 })
 
 // 1) 세션 생성하기
-router.get('/set' ,(req,res)=>{
-    req.session.name="이다현";
+router.get('/' ,(req,res)=>{
+    // req.session.name="이다현";
     req.session.save(()=>{ //콜백함수 이용
         /*순서정하기 위해 사용할 수 있는 방법
         (JS문법- js는 문법이 순차적으로 진행되지 x)
@@ -50,13 +50,13 @@ router.get('/set' ,(req,res)=>{
 })
 
 // 2) 세션 값 확인하기
-router.get('/index', (req,res)=>{
+router.get('/', (req,res)=>{
     // 메인창 로그인할 때, 00님 환영합니다
-    console.log(req.session.name) // 서버에서 클라이언트에게 주는 것으므로 응답임
+    console.log(req.session.m_name) // 서버에서 클라이언트에게 주는 것으므로 응답임
 })
 
 // 3) 세션 삭제(== 로그아웃)
-router.get('/login',(req,res)=>{
+router.get('/logout',(req,res)=>{
     //case 1) 세션 내용 단일 삭제
     // 사실상 비어있는 데이터를 저장하는 것
     req.session.name=""

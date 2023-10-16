@@ -1,18 +1,22 @@
 const express = require("express");
 const router = express.Router();
+const app=express();
+
+// 미들웨어
+app.use((req,res)=>{
+  res.locals.user = req.session.user;
+  res.locals.store = req.session.store;
+  console.log("회원 이름: ", res.locals.user.m_name);
+
+})
 
 // Main Page 열기
 router.get("/", (req, res) => {
-  // template engine안에서 내가 원하는 데이터를 사용하고 싶으면?
-  // res.render("파일명", {속성: 보낼 데이터});
-  // res.render('index', {obj: req.session.user})
-  // => index라는 파일 안에서 obj라는 변수이름으로 해당 값을 사용하겠다는 의미
-  //index안에는 banner, mypage, layout이 포함
+    res.render('index')
+    // console.log("회원 이름: ", data.user.m_name);
+  });
   
-  // 메인 페이지
-    // console.log('session: ',req.session.u_id)
-    res.render('index', {obj: req.session.m_id})
-});
+
 
 // 회원가입 Page 열기
 router.get("/register", (req, res) => {

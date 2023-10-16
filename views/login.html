@@ -43,16 +43,16 @@
                   </div>
                   <form class="user" method="post" action="/user/login">
                     <div class="form-group">
-                      <input type="ID" class="form-control form-control-user" id="exampleInputEmail"
-                        aria-describedby="emailHelp" placeholder="아이디">
+                      <input type="ID" class="form-control form-control-user" id="m_id" name="m_id" 
+                        aria-describedby="emailHelp" placeholder="아이디"> <!-- name는 폼데이터를 서버로 제출할때, id는 css에서 활용-->
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="exampleInputPassword"
+                      <input type="password" class="form-control form-control-user" id="m_pw" name="m_pw"
                         placeholder="비밀번호">
                     </div>
-                    <a href="/" class="btn btn-primary btn-user btn-block">
+                    <button type="submit" class="btn btn-primary btn-user btn-block">
                       로그인
-                    </a>
+                    </button>
                     <hr>
                     <div class="text-center">
                       <a class="small" href="/register">회원가입</a>
