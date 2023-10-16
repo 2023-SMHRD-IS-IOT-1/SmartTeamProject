@@ -9,6 +9,8 @@ const fileStore = require("session-file-store")(session);
 // 라우터 연결
 const indexRouter = require("./routes");
 const userRouter = require("./routes/user");
+const arduinoRouter = require("./routes/arduino");
+
 
 const cors = require("cors");
 
@@ -47,6 +49,8 @@ app.use(
 
 app.use("/", indexRouter);
 app.use("/user", userRouter);
+app.use("/arduino", arduinoRouter);
+
 
 app.listen(app.get("port"), () => {
   console.log(app.get("port") + "번 포트에서 대기 중..");
