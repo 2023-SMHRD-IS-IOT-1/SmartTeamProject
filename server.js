@@ -18,6 +18,14 @@ app.use(cors());
 app.set("port", process.env.PORT || 3333);
 app.set("view engine", "html");
 
+// 세션 설정
+app.use(session({
+  secret: 'your_secret_key',
+  resave: false,
+  saveUninitialized: true,
+}));
+
+// Nunjucks 템플릿 설정
 nunjucks.configure("views", {
   express: app,
   watch: true,

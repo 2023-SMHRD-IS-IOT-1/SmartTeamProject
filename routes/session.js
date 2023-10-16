@@ -60,9 +60,9 @@ router.get('/logout',(req,res)=>{
     //case 1) 세션 내용 단일 삭제
     // 사실상 비어있는 데이터를 저장하는 것
     req.session.name=""
-    req.session.save(()=>{
-        res.redirect('/s');
-    })
+    // req.session.save(()=>{
+    //     res.redirect('/s');
+    // })
 
     // case 2) 세션 전체 삭제
     // req.session.destroy(()=>{
