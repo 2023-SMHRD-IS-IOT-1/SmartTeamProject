@@ -164,35 +164,62 @@ router.post("/itemManage", (req, res) => {
 	// 1. 내가 받아온 새 이름과 새 주소를 name, add라는 변수에 넣을 것
 	let { p_name, p_weight, p_category, shelf_loc } = req.body;
 	console.log('상품 정보 수정', req.body);
-
-	// console.log('session',  req.session.store)
-
+  
 	// 2. store_code 값? session에서 가져오기
-	// if (req.session.store && req.session.store.store_code) {
-		let store_code = req.session.store.store_code;
-		console.log('매장 코드:', req.session.store.store_code);
+	if (req.session.store && req.session.store.store_code) {
+	  let store_code = req.session.store.store_code;
+	  console.log('매장 코드:', store_code);
+  
+	  let sql_p = "insert into products (p_name, p_weight, p_category, shelf_loc, store_code) values (?,?,?,?,?)";
+	  if (p_name && p_weight && p_category && shelf_loc) {
+		conn.query(sql_p, [p_name, p_weight, p_category, shelf_loc, store_code], (err, rows) => {
+		  if (err) {
+			console.error('SQL 에러:', err);
+			// 에러 처리
+			res.send(`
+			  <script>
+			  alert('상품 정보 입력 중 에러가 발생했습니다.');
+			  location.href="http://localhost:3333/itemManage";
+			  </script>
+			`);
+		  } else {
+			if (rows && rows.affectedRows > 0) {
+			  res.send(`
+				<script>
+				alert('상품 정보를 성공적으로 입력했습니다!');
+				location.href="http://localhost:3333/itemManage";
+				</script>
+			  `);
+			  console.log('상품 정보 입력 성공');
+			} else {
+			  // 입력 실패
+			  res.send(`
+				<script>
+				alert('상품 정보 입력에 실패했습니다');
+				location.href="http://localhost:3333/itemManage";
+				</script>
+			  `);
+			}
+		  }
+		});
+	  }else{
+		res.send(`
+				<script>
+				alert('상품 정보를 모두 입력해주시기 바랍니다.');
+				location.href="http://localhost:3333/itemManage";
+				</script>
+			  `);
+	  }
 
-		let sql_p = "insert into members (p_name, p_weight, p_category,shelf_loc,store_code) values (?,?,?,?,?)"
-		if (p_name && p_weight && p_category && shelf_loc) {
-			conn.query(sql_p, [p_name, p_weight, p_category, shelf_loc, store_code], (err, rows) => {
-				if (typeof rows !== 'undefined' && rows.length > 0) {
-					res.send(`
-					<script>
-					alert('상품 정보를 성공적으로 입력했습니다!');
-					location.href="http://localhost:3333/itemManage";
-					</script>
-					`);
-					console.log('상품 정보 입력 성공', rows);
-				} else {
-					// 입력실패
-					res.send(`
-					<script>
-					alert('상품 정보 모두 입력해주시기 바랍니다');
-					location.href="http://localhost:3333/itemManage";
-					</script>
-					`);
-				}
-			})
-		}
-	});
+	  
+	} else {
+	  // store_code를 찾을 수 없는 경우에 대한 처리
+	  res.send(`
+		<script>
+		alert('로그인을 해주시기 바랍니다');
+		location.href="http://localhost:3333/itemManage";
+		</script>
+	  `);
+	}
+  });
 module.exports = router;
