@@ -4,26 +4,30 @@
 {% block content %}
 <!-- <p>마이 페이지</p> -->
 
-<div class="container">
+<div class="container-fluid">
 
-    <div class="card o-hidden border-0 shadow-lg my-5">
-        <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-                <div class="col-lg-3 d-none d-lg-block"></div>
-                <div class="col-lg-7">
-                    <div class="p-5">
-                        <div class="text-center">
-                            <h1 class="h4 text-gray-900 mb-4">회원 정보</h1>
-                        </div>
-                        <form class="user" action="/join" method="post">
-
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">My page</h1>
+        </div>
+        <div class="col-xl-6 col-lg-11">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h5 class="m-0 font-weight-bold text-primary">회원 정보</h5>
+                </div>
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <div class="graph">
+                        <div class="p-lg-10">
+                            <form class="user" action="/user/myPage" method="post">
+                                <h6>회원 정보</h6>
                                 <div class="form-group">
                                     <input type="name" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="아이디">{{data.user.m_id}}->placeholder는 렌더링 템플릿 문법 사용하는 것이 일반적으로 작동 하지 X
+                                        placeholder="아이디" value={{user.m_id}}>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="col-sm-6">
                                         <input type="password" class="form-control form-control-user"
                                             id="exampleInputPassword" placeholder="비밀번호 변경">
                                     </div>
@@ -34,45 +38,43 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="name" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="이름">{{data.user.m_name}}
+                                        placeholder="이름" value={{user.m_name}}>
                                 </div>
                                 <div class="form-group">
                                     <input type="phone" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="전화번호">{{data.user.m_phone}}
+                                        placeholder="전화번호" value={{user.m_phone}}>
                                 </div>
-                            </form>
-                            <hr>
+                                <hr>
+                                <h6>매장 정보</h6>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control form-control-user"
+                                            id="exampleInputPassword" placeholder="매장명" value={{store.store_name}}>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control form-control-user"
+                                            id="exampleRepeatPassword" placeholder="대표자명" value={{store.store_owner}}>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control form-control-user" id="exampleInputEmail"
+                                        placeholder="매장 번호" value={{store.store_phone}}>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control form-control-user" id="exampleInputEmail"
+                                        placeholder="매장 주소" value={{store.store_loc}}>
+                                </div>
 
-                        <form class="user">
-                            <div class="form-group row">
-                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="password" class="form-control form-control-user"
-                                        id="exampleInputPassword" placeholder="매장명">{{data.store.store_name}}
-                                </div>
-                                <div class="col-sm-6">
-                                    <input type="password" class="form-control form-control-user"
-                                        id="exampleRepeatPassword" placeholder="대표자명">{{data.store.store_owner}}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="name" class="form-control form-control-user" id="exampleInputEmail"
-                                    placeholder="매장 번호">{{data.store.store_phone}}
-                            </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control form-control-user" id="exampleInputEmail"
-                                    placeholder="매장 주소">{{data.store.store_loc}}
-                            </div>
-                            
-                            <a href="" class="btn btn-primary btn-user btn-block">
-                                
-                                수정
-                            </a>
-                        </form>
+                                <a href="" class="btn btn-primary btn-user btn-block">
+
+                                    수정
+                                </a>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-</div>
-{% endblock %}
+    </div>
+    </div>
+    {% endblock %}

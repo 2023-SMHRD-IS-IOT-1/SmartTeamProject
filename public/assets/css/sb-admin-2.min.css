@@ -12609,3 +12609,9 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
     width: 100%
 }
+
+.graph{
+    margin: 30px;
+    flex: 10 10 90.33333%;
+    max-width: 100%
+}

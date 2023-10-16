@@ -44,7 +44,6 @@ router.post("/register", (req, res) => {
 								location.href="http://localhost:3333/register";
 							</script>
 						`);
-			console.log('매장정보 부재');
 		} else {
 			res.send(`
           <script>
@@ -135,7 +134,7 @@ router.post("/myPage", (req, res) => {
 	let { m_pw, m_name, m_phone, store_name, store_owner, store_phone, store_loc } = req.body;
 
 	// 2. id 값? session에서 가져오기
-	let id = req.session.user.m_id;
+	let m_id = req.session.user.m_id;
 
 	let sql = "update members set m_name=?, m_phone=?, m_pw=? where m_id=?"
 	conn.query(sql_m, [m_id, m_pw, m_name, m_phone], (err, rows) => {
@@ -160,4 +159,40 @@ router.post("/myPage", (req, res) => {
 
 });
 
+// 상품 정보 입력
+router.post("/itemManage", (req, res) => {
+	// 1. 내가 받아온 새 이름과 새 주소를 name, add라는 변수에 넣을 것
+	let { p_name, p_weight, p_category, shelf_loc } = req.body;
+	console.log('상품 정보 수정', req.body);
+
+	// console.log('session',  req.session.store)
+
+	// 2. store_code 값? session에서 가져오기
+	// if (req.session.store && req.session.store.store_code) {
+		let store_code = req.session.store.store_code;
+		console.log('매장 코드:', req.session.store.store_code);
+
+		let sql_p = "insert into members (p_name, p_weight, p_category,shelf_loc,store_code) values (?,?,?,?,?)"
+		if (p_name && p_weight && p_category && shelf_loc) {
+			conn.query(sql_p, [p_name, p_weight, p_category, shelf_loc, store_code], (err, rows) => {
+				if (typeof rows !== 'undefined' && rows.length > 0) {
+					res.send(`
+					<script>
+					alert('상품 정보를 성공적으로 입력했습니다!');
+					location.href="http://localhost:3333/itemManage";
+					</script>
+					`);
+					console.log('상품 정보 입력 성공', rows);
+				} else {
+					// 입력실패
+					res.send(`
+					<script>
+					alert('상품 정보 모두 입력해주시기 바랍니다');
+					location.href="http://localhost:3333/itemManage";
+					</script>
+					`);
+				}
+			})
+		}
+	});
 module.exports = router;
