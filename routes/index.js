@@ -15,6 +15,8 @@ app.use((req,res)=>{
 
 })
 
+// 상품 정보 저장 되있는 세션 
+req.session.product
 
 // Main Page 열기
 router.get("/", (req, res) => {
@@ -22,6 +24,8 @@ router.get("/", (req, res) => {
     user: req.session.user,
     store: req.session.store
   }
+  
+
   res.render('index',  data);
   // console.log("회원 이름: ", res.locals.data.user.m_name);
 })
