@@ -19,7 +19,6 @@ router.get("/", (req, res) => {
     product : req.session.product,
     shipment: req.session.shipment
   }
-  // console.log("상품 정보:",req.session.product);
   if ( req.session.user != undefined){
     res.render('index',  data);
   } else {

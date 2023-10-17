@@ -98,6 +98,7 @@ h6 {
 }
 
 p {
+    font-size: 80%;
     margin-top: 0;
     margin-bottom: 1rem
 }
@@ -457,7 +458,7 @@ hr {
 
 .small,
 small {
-    font-size: 80%;
+    font-size: 90%;
     font-weight: 400
 }
 
@@ -626,6 +627,13 @@ pre code {
 }
 
 .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -.75rem;
+    margin-left: -.75rem
+}
+.log-row {
+    padding: 80px;
     display: flex;
     flex-wrap: wrap;
     margin-right: -.75rem;
@@ -8709,7 +8717,7 @@ button.bg-dark:hover {
 }
 
 .p-5 {
-    padding: 3rem !important
+    padding: 1rem !important
 }
 
 .pt-5,
@@ -11007,6 +11015,11 @@ a:focus {
 .container-xl {
     padding-left: 2.5rem;
     padding-right: 1.5rem
+}
+.container-fluid2{
+    margin-top: 90px;
+    margin-left: 25%;
+    padding: 10px;
 }
 
 .scroll-to-top {
