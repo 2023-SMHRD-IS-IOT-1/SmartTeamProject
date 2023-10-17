@@ -2,19 +2,14 @@ const express = require("express");
 const router = express.Router();
 const app = express();
 
-
 // 미들웨어
-
-
 app.use((req,res)=>{
   res.locals.data={
       user : req.session.user,
       store : req.session.store
   }
-      // console.log("회원 이름: ", res.locals.user.m_name);
-
+  // console.log("회원 이름: ", res.locals.user.m_name);
 })
-
 
 // Main Page 열기
 router.get("/", (req, res) => {
@@ -26,9 +21,8 @@ router.get("/", (req, res) => {
   // console.log("회원 이름: ", res.locals.data.user.m_name);
 })
 
-
 // 상품 입력 Page 열기
-router.get("/itemManage", (req, res) => {
+router.get("/itemmanage", (req, res) => {
   const data = {
     user: req.session.user,
     store: req.session.store
@@ -44,7 +38,6 @@ router.get("/myPage", (req, res) => {
   }
   res.render("myPage",  data);
 });
-
 
 // 회원가입 Page 열기
 router.get("/register", (req, res) => {

@@ -8,12 +8,9 @@ const conn = require("../config/database");
 // 데이터 인지 여부 변수 선언
 let isDataConnecting = false;
 
-// 선반 기준 수량
-const ShelfLowInventoryCnt = 3;
-
 // 아두이노와의 통신 성공 여부 확인
 router.get('/sendData', (req, res) => {
-  if (isDataConnectiong) {
+  if (isDataConnecting) {
     res.send("<p>연결 중</p>")
   } else {
     res.send('<p>연결 끊김</p>')
@@ -28,10 +25,7 @@ router.post('/sendData', (req, res) => {
   // console.log(receiveSensorData);
   const { store_code } = receiveSensorData;
 
-  // 선반 재고량 부족한 목록을 저장하기 위한 빈 배열
-  const ShelfLowInventory = [];
-
-  receiveSensorData ? isDataConnectiong = true : isDataConnectiong = false;
+  receiveSensorData ? isDataConnecting = true : isDataConnecting = false;
 
   // 1) 데이터베이스 
   // 상품의 데이터를 가져오는 쿼리문
@@ -78,16 +72,7 @@ router.post('/sendData', (req, res) => {
           }
         })
       }
-
-      // 선반의 수량이 기준량 보다 작다면 p_code 추가
-      if (isSensorCount <= ShelfLowInventoryCnt) {
-        ShelfLowInventory.push(p_code)
-      }
     }
-
-    req.session.ShelfLowInventoryAlert = ShelfLowInventory;
-    
-    console.log('세션의 값:',req.session.ShelfLowInventoryAlert );
   })
 })
 
