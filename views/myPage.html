@@ -4,66 +4,66 @@
 {% block content %}
 <!-- <p>마이 페이지</p> -->
 
-<div class="container-fluid2">
+<div class="container-fluid">
 
-        <!-- Page Heading -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">My page</h1>
-        </div>
-        <div class="col-xl-6 col-lg-11">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">회원 정보</h5>
-                </div>
-                <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-3"></div>
-                    <div class="graph">
-                        <div class="p-lg-10">
-                            <form class="user" action="/user/myPage" method="post">
-                                <h6>회원 정보</h6>
-                                <div class="form-group">
-                                    <input type="name" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="아이디" value={{user.m_id}}>
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">My page</h1>
+    </div>
+    <div class="col-xl-6 col-lg-11">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h5 class="m-0 font-weight-bold text-primary">회원 정보</h5>
+            </div>
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-3"></div>
+                <div class="graph">
+                    <div class="p-lg-10">
+                        <form class="user" action="/user/myPage" method="post">
+                            <h6>회원 정보</h6>
+                            <div class="form-group">
+                                <input type="name" class="form-control form-control-user" id="exampleInputEmail"
+                                    placeholder="아이디" name="m_id" value={{user.m_id}}>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <input type="password" class="form-control form-control-user" name="m_pw"
+                                        placeholder="비밀번호 입력">
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="비밀번호 변경">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleRepeatPassword" placeholder="비밀번호 확인">
-                                    </div>
+                                <div class="col-sm-6">
+                                    <input type="password" class="form-control form-control-user"
+                                        id="exampleRepeatPassword" name="m_pw2" placeholder="비밀번호 확인">
                                 </div>
-                                <div class="form-group">
-                                    <input type="name" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="이름" value={{user.m_name}}>
+                            </div>
+                            <div class="form-group">
+                                <input type="name" class="form-control form-control-user" id="exampleInputEmail"
+                                    placeholder="이름" name="m_name" value={{user.m_name}}>
+                            </div>
+                            <div class="form-group">
+                                <input type="phone" class="form-control form-control-user" id="exampleInputEmail"
+                                    placeholder="전화번호" name="m_phone" value={{user.m_phone}}>
+                            </div>
+                            <hr>
+                            <h6>매장 정보</h6>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input type="text" class="form-control form-control-user" id="exampleInputPassword"
+                                        placeholder="매장명" name="store_name" value={{store.store_name}}>
                                 </div>
-                                <div class="form-group">
-                                    <input type="phone" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="전화번호" value={{user.m_phone}}>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-user" id="exampleRepeatPassword"
+                                        placeholder="대표자명" name="store_owner" value={{store.store_owner}}>
                                 </div>
-                                <hr>
-                                <h6>매장 정보</h6>
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="매장명" value={{store.store_name}}>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user"
-                                            id="exampleRepeatPassword" placeholder="대표자명" value={{store.store_owner}}>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="매장 번호" value={{store.store_phone}}>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="매장 주소" value={{store.store_loc}}>
-                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" id="exampleInputEmail"
+                                    placeholder="매장 번호" name="store_phone" value={{store.store_phone}}>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control form-control-user" id="exampleInputEmail"
+                                    placeholder="매장 주소" name="store_loc" value={{store.store_loc}}>
+                            </div>
 
                             <button type="submit" class="btn btn-primary btn-user btn-block">
                                 수정

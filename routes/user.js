@@ -99,7 +99,7 @@ router.post("/login", (req, res) => {
 								console.log("출고err:",err);
 							}else{
 							req.session.shipment = ship_rows;
-							console.log('출고 세션 정보: ', req.session);
+							console.log('출고 세션 정보: ', req.session.shipment);
 							console.log('로그인 성공')
 							req.session.save(() => {
 										res.send(`
