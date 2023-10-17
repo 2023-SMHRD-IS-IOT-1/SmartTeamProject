@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-
 const bodyParser = require("body-parser");
 const nunjucks = require("nunjucks");
 const session = require("express-session");

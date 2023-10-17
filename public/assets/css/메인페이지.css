@@ -38,3 +38,20 @@
     padding-left: 50%;
 } */
 
+.fw{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.wd{
+    width: auto;
+    display: grid;
+}
+
+.content_container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+

@@ -29,10 +29,13 @@ router.get("/", (req, res) => {
 
 // 상품 입력 Page 열기
 router.get("/itemManage", (req, res) => {
+
   const data = {
     user: req.session.user,
-    store: req.session.store
+    store: req.session.store,
+    product : req.session.product
   }
+  console.log(data);
   res.render("itemManage", data);
 });
 

@@ -1630,7 +1630,7 @@ pre code {
     }
 
     .col-xl-6 {
-        flex: 0 0 50%;
+        flex: 0 0 60%;
         max-width: 50%
     }
 
