@@ -17,8 +17,11 @@ router.get("/", (req, res) => {
     user: req.session.user,
     store: req.session.store
   }
-  res.render('index',  data);
-  // console.log("회원 이름: ", res.locals.data.user.m_name);
+  if ( req.session.user != undefined){
+    res.render('index',  data);
+  } else {
+  res.redirect("/login");
+  }
 })
 
 // 상품 입력 Page 열기
