@@ -56,18 +56,4 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
-
-
-// 리액트로 보낼 센서데이터 
-let sendSensorData = undefined;
-
-// 아두이노 와이파이 테스트
-// 아두이노 => 노드 
-router.post('/arduinoData', (req, res) => {
-  // 아두이노의 데이터 >> req.body
-  // sensorData 변수에 저장
-  sendSensorData = req.body;
-})
-
-
 module.exports = router;
