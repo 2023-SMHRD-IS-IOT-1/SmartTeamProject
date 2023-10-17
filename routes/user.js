@@ -8,6 +8,7 @@ router.post("/register", (req, res) => {
 	console.log('가입', req.body)
 	let sql_m = "insert into members(m_id, m_pw, m_name, m_phone) values(?,?,?,?)";
 	let sql_s = "insert into stores(store_name, store_owner, store_phone, store_loc, m_id) values(?,?,?,?,?)";
+
 	if (m_id && m_pw && m_name && m_phone) {
 		// 회원가입 정보 저장
 		if (m_pw === m_pw2) {
@@ -129,98 +130,169 @@ router.get("/logout", (req, res) => {
 
 // 회원 정보 수정 기능 라우터 (JS fetch 와의 연동) ★★★★★
 router.post("/myPage", (req, res) => {
-	console.log('회원정보 수정', req.body);
-	// 1. 내가 받아온 새 이름과 새 주소를 name, add라는 변수에 넣을 것
-	let { m_pw, m_name, m_phone, store_name, store_owner, store_phone, store_loc } = req.body;
+	if (req.session.user) {
 
-	// 2. id 값? session에서 가져오기
-	let m_id = req.session.user.m_id;
+		console.log('회원정보 수정', req.body);
+		let sql_s = "update stores set store_name = ?, store_owner=?, store_phone=?, store_loc=? where m_id=?";
+		let sql_m = "update members set m_pw = ?, m_name = ?, m_phone = ? where m_id = ?"
 
-	let sql = "update members set m_name=?, m_phone=?, m_pw=? where m_id=?"
-	conn.query(sql_m, [m_id, m_pw, m_name, m_phone], (err, rows) => {
-		console.log('결과', rows)
-		if (rows) {
-			// 변경성공
-			req.session.m_name.m_pw = m_pw;
-			req.session.m_name.m_name = m_name;
-			req.session.m_name.m_phone = m_phone;
-			res.json({ msg: 'success' })
+		let sql_p = 'select * from products where store_code=?'
+		// let sql_ship = 'select * from shipments where p_code=?'
+
+		let { m_pw, m_pw2, m_name, m_phone, store_name, store_owner, store_phone, store_loc } = req.body;
+		let m_id = req.session.user.m_id;
+
+		if (m_pw === m_pw2) {
+			conn.query(sql_m, [m_pw, m_name, m_phone, m_id], (err, rows) => {
+
+				console.log('sql_m 결과', rows)
+
+				if (err) {
+					console.log("에러:", err);
+				} else if (rows.affectedRows > 0) {
+					// 	// 변경성공
+					req.session.user.m_pw = m_pw;
+					req.session.user.m_name = m_name;
+					req.session.user.m_phone = m_phone;
+					console.log('회원정보 수정 성공');
+					// console.log('결과', rows)
+					conn.query(sql_s, [store_name, store_owner, store_phone, store_loc, m_id], (err, rows) => {
+						console.log('매장정보');
+						if (rows.affectedRows > 0) {
+							req.session.store.store_name = store_name;
+							req.session.store.store_owner = store_owner;
+							req.session.store.store_phone = store_phone;
+							req.session.store.store_loc = store_loc;
+							console.log('매장정보 수정 성공');
+							res.send(`
+							<script>
+							alert('정보 수정 완료 되었습니다!');
+							location.href="/myPage";
+							</script>
+							`);
+						} else {
+							res.send(`
+						<script>
+						alert('매장 정보가 올바르지 않습니다.');
+						</script>
+						`);
+						}
+						console.log('매장 결과', rows)
+
+					})
+				} else {
+					res.send(`
+					<script>
+					alert('정보 수정에 실패하였습니다.');
+					location.href="/myPage";
+
+					</script>
+					`);
+				}
+			});
 		} else {
-			// 변경실패
-			res.json({ msg: 'failed' })
+			res.send(
+				`<script>
+			alert("비밀번호가 일치하지 않습니다.")
+			</script>`);
 		}
-	})
+	} else {
+		res.send(
+			`<script>
+				alert("로그인을 해주시기 바랍니다.")
+				location.href="/login";
+				</script>`);
+	}
+})
 
-	// 3. DB 연동
-	//  3-2) update set 을 이용해서 DB 값 변경
-	//  3-3) 세션 안에 있는 값 변경 (이름, 주소 변경)
-	// 4. console.log('값 변경 성공!'), '값 변경 실패'
-	//       => 페이지 이동 X 캡쳐해서 단톡방에~
 
-});
-
-// 상품 정보 입력
+// 상품 정보 목록 및 입력
 router.post("/itemManage", (req, res) => {
+
+	// 상품 입력 관련
 	// 1. 내가 받아온 새 이름과 새 주소를 name, add라는 변수에 넣을 것
 	let { p_name, p_weight, p_category, shelf_loc } = req.body;
-	console.log('상품 정보 수정', req.body);
-  
+	console.log('수정 정보: ', req.body);
+
 	// 2. store_code 값? session에서 가져오기
-	if (req.session.store && req.session.store.store_code) {
-	  let store_code = req.session.store.store_code;
-	  console.log('매장 코드:', store_code);
-  
-	  let sql_p = "insert into products (p_name, p_weight, p_category, shelf_loc, store_code) values (?,?,?,?,?)";
-	  if (p_name && p_weight && p_category && shelf_loc) {
-		conn.query(sql_p, [p_name, p_weight, p_category, shelf_loc, store_code], (err, rows) => {
-		  if (err) {
-			console.error('SQL 에러:', err);
-			// 에러 처리
-			res.send(`
+	if (req.session.user != undefined) {
+		let store_code = req.session.store.store_code;
+		console.log('매장 코드:', store_code);
+
+		let sql_p = "insert into products (p_name, p_weight, p_category, shelf_loc, store_code) values (?,?,?,?,?)";
+		if (p_name && p_weight && p_category && shelf_loc) {
+			conn.query(sql_p, [p_name, p_weight, p_category, shelf_loc, store_code], (err, rows) => {
+				if (err) {
+					console.error('SQLinsert 에러:', err);
+					// 에러 처리
+					res.send(`
 			  <script>
 			  alert('상품 정보 입력 중 에러가 발생했습니다.');
-			  location.href="http://localhost:3333/itemManage";
+			  location.href="/itemManage"
 			  </script>
 			`);
-		  } else {
-			if (rows && rows.affectedRows > 0) {
-			  res.send(`
+				} else {
+					if (rows && rows.affectedRows > 0) {
+						res.send(`
 				<script>
 				alert('상품 정보를 성공적으로 입력했습니다!');
-				location.href="http://localhost:3333/itemManage";
+				location.href="/user/itemManage"
 				</script>
 			  `);
-			  console.log('상품 정보 입력 성공');
-			} else {
-			  // 입력 실패
-			  res.send(`
+						console.log('상품 정보 입력 성공');
+					} else {
+						// 입력 실패
+						res.send(`
+							<script>
+							alert('상품 정보 입력에 실패했습니다');
+							location.href="/itemManage";
+							</script>
+						`);
+					}
+				}
+			});
+		} else {
+			res.send(`
 				<script>
-				alert('상품 정보 입력에 실패했습니다');
-				location.href="http://localhost:3333/itemManage";
+				alert('상품 정보를 모두 입력해주시기 바랍니다.');location.href="/itemManage"
 				</script>
 			  `);
-			}
-		  }
-		});
-	  }else{
-		res.send(`
-				<script>
-				alert('상품 정보를 모두 입력해주시기 바랍니다.');
-				location.href="http://localhost:3333/itemManage";
-				</script>
-			  `);
-	  }
+		}
 
-	  
+
 	} else {
-	  // store_code를 찾을 수 없는 경우에 대한 처리
-	  res.send(`
+		// store_code를 찾을 수 없는 경우에 대한 처리
+		res.send(`
 		<script>
-		alert('로그인을 해주시기 바랍니다');
-		location.href="http://localhost:3333/itemManage";
+		alert('로그인을 해주시기 바랍니다');location.href="/login"
 		</script>
 	  `);
 	}
+});
+
+router.get("/itemManage",(req,res)=>{
+	// 상품 목록 관련
+	let sql_p_select = "select p_code, p_name, p_weight, p_category, shelf_loc from products where store_code=?";
+	let store_code= req.session.store.store_code;
+	conn.query(sql_p_select,[store_code], (err, rows) => {
+		if (err) {
+			console.error('SQLselect 에러:', err);
+			res.send(`
+				<script>
+				alert('상품 목록 조회 중 에러가 발생했습니다.');
+				location.href="/itemManage";
+				</script>
+			`);
+		} else {
+			console.log(rows);
+			req.session.product = rows;
+			res.redirect("/itemManage");
+		}
+	})
+})
+
+
+
   });
 
 

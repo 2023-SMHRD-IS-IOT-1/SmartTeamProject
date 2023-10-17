@@ -1638,7 +1638,7 @@ pre code {
     }
 
     .col-xl-6 {
-        flex: 0 0 50%;
+        flex: 0 0 60%;
         max-width: 50%
     }
 
@@ -11013,7 +11013,7 @@ a:focus {
 .container-md,
 .container-sm,
 .container-xl {
-    padding-left: 1.5rem;
+    padding-left: 2.5rem;
     padding-right: 1.5rem
 }
 .container-fluid2{
