@@ -72,18 +72,44 @@ router.post("/login", (req, res) => {
 	// 3. DB 연동해서 해당 id값과 pw값이 일치하는 데이터가 DB에 있는지 확인한다
 	let sql_m = 'select * from members where m_id=? and m_pw=?'
 	let sql_s = 'select * from stores where m_id=?'
+	let sql_p = "select * from products where store_code=?"
+	let sql_ship = 'select * from shipments where p_code=?'
+
 	// 4. 데이터가 존재한다면 로그인 성공
 	conn.query(sql_m, [m_id, m_pw], (err, m_rows) => {
 		// console.log(rows)
 		if (m_rows.length > 0) { //if(rows)가 안되는 이유: rows는 로그인에 실패해도 뜸
+			req.session.user = m_rows[0];
+			console.log('회원 세션 정보: ', req.session.user);
+
+		
 			conn.query(sql_s, [m_id], (err, s_rows) => {
 				if (s_rows.length > 0) {
-					console.log('로그인 성공')
-					req.session.user = m_rows[0];
-					req.session.store = s_rows[0];
-					console.log('회원 세션 정보: ', req.session.user);
-					console.log('매장 세션 정보: ', req.session.store);
-
+			            req.session.store = s_rows[0];
+						console.log('매장 세션 정보: ', req.session.store);
+						
+						let store_code=req.session.store.store_code;	
+						conn.query(sql_p, [store_code], (err, p_rows) => {
+							req.session.product = p_rows;
+							console.log('상품 세션 정보: ', req.session.product);
+							
+						let p_code=req.session.product.p_code;
+						conn.query(sql_ship, [p_code], (err, ship_rows) => {
+							if(err){
+								console.log("출고err:",err);
+							}else{
+							req.session.shipment = ship_rows;
+							console.log('출고 세션 정보: ', req.session);
+							console.log('로그인 성공')
+							req.session.save(() => {
+										res.send(`
+									<script>
+									alert("${m_rows[0].m_name}님 환영합니다.");location.href="/"
+									</script>>`)
+										})
+									}
+						})
+					})
 				} else {
 					console.log('매장 정보 부재')
 				}
@@ -92,13 +118,7 @@ router.post("/login", (req, res) => {
 				//      4-2) 로그인이 성공했다면, 해당 유저의 정보를 세션에 저장 (id, nick, address)
 				//      4-3) 환영합니다! alert => 메인으로 이동
 				// 5. 데이터가 존재하지 않는다면 로그인 실패
-				req.session.save(() => {
 
-					res.send(`
-						<script>
-						alert("${m_rows[0].m_name}님 환영합니다.");location.href="/"
-						</script>>`)
-				})
 			})
 		} else {
 			console.log('로그인 실패')
@@ -270,11 +290,11 @@ router.post("/itemManage", (req, res) => {
 	}
 });
 
-router.get("/itemManage",(req,res)=>{
+router.get("/itemManage", (req, res) => {
 	// 상품 목록 관련
 	let sql_p_select = "select p_code, p_name, p_weight, p_category, shelf_loc from products where store_code=?";
-	let store_code= req.session.store.store_code;
-	conn.query(sql_p_select,[store_code], (err, rows) => {
+	let store_code = req.session.store.store_code;
+	conn.query(sql_p_select, [store_code], (err, rows) => {
 		if (err) {
 			console.error('SQLselect 에러:', err);
 			res.send(`

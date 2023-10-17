@@ -3,20 +3,23 @@ const router = express.Router();
 const app = express();
 
 // 미들웨어
-app.use((req,res)=>{
-  res.locals.data={
-      user : req.session.user,
-      store : req.session.store
-  }
-  // console.log("회원 이름: ", res.locals.user.m_name);
-})
+// app.use((req,res)=>{
+//   res.locals.data={
+//       user : req.session.user,
+//       store : req.session.store
+//   }
+//   // console.log("회원 이름: ", res.locals.user.m_name);
+// })
 
 // Main Page 열기
 router.get("/", (req, res) => {
   const data = {
     user: req.session.user,
-    store: req.session.store
+    store: req.session.store,
+    product : req.session.product,
+    shipment: req.session.shipment
   }
+  // console.log("상품 정보:",req.session.product);
   if ( req.session.user != undefined){
     res.render('index',  data);
   } else {
@@ -30,7 +33,8 @@ router.get("/itemManage", (req, res) => {
   const data = {
     user: req.session.user,
     store: req.session.store,
-    product : req.session.product
+    product : req.session.product,
+    ship: req.session.shipment
   }
   console.log(data);
   res.render("itemManage", data);
@@ -40,7 +44,9 @@ router.get("/itemManage", (req, res) => {
 router.get("/myPage", (req, res) => {
   const data = {
     user: req.session.user,
-    store: req.session.store
+    store: req.session.store,
+    product : req.session.product,
+    ship: req.session.shipment
   }
   res.render("myPage",  data);
 });

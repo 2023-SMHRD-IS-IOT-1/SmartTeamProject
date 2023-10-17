@@ -54,4 +54,7 @@
     flex-wrap: wrap;
     justify-content: center;
 }
-
+.list{
+    width: 100%;
+    text-align: center;
+}
