@@ -4,13 +4,13 @@ const app = express();
 const conn = require("../config/database");
 
 // 미들웨어
-// app.use((req,res)=>{
-//   res.locals.data={
-//       user : req.session.user,
-//       store : req.session.store
-//   }
-//   // console.log("회원 이름: ", res.locals.user.m_name);
-// })
+/* app.use((req, res) => {
+  res.locals.data = {
+    user: req.session.user,
+    store: req.session.store
+  }
+  // console.log("회원 이름: ", res.locals.user.m_name);
+}) */
 
 // Main Page 열기
 router.get("/", (req, res) => {
