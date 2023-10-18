@@ -190,7 +190,8 @@
                                         <th>상품 분류</th>
                                         <th>제품명</th>
                                         <th>재고량</th>
-                                        <th>누적 판매량</th>
+                                        <th>주간 누적 판매량</th>
+                                        <th>월간 누적 판매량</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -200,9 +201,16 @@
                                         <td>{{ p_item.p_name }}</td>
                                         <td>{{ p_item.p_cnt }}</td>
                                         <td>
-                                            {% for s_item in shipment_month %}
-                                            {% if s_item.p_code == p_item.p_code%}
-                                            {{s_item.month_sum_ship_cnt}}
+                                            {% for w_item in shipment_week %}
+                                            {% if w_item.p_code == p_item.p_code%}
+                                            {{w_item.week_sum_ship_cnt}}
+                                            {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td>
+                                            {% for m_item in shipment_month %}
+                                            {% if m_item.p_code == p_item.p_code%}
+                                            {{m_item.month_sum_ship_cnt}}
                                             {% endif %}
                                             {% endfor %}
                                         </td>
