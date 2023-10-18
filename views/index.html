@@ -196,11 +196,11 @@
                                 <tbody>
                                     {% for p_item in product%}
                                     <tr>
-                                        <td>{{ item.p_category }}</td>
-                                        <td>{{ item.p_name }}</td>
-                                        <td>{{ item.p_cnt }}</td>
+                                        <td>{{ p_item.p_category }}</td>
+                                        <td>{{ p_item.p_name }}</td>
+                                        <td>{{ p_item.p_cnt }}</td>
                                         <td>
-                                            {% for s_item in shipment %}
+                                            {% for s_item in shipment_month %}
                                             {% if s_item.p_code == p_item.p_code%}
                                             {{s_item.month_sum_ship_cnt}}
                                             {% endif %}
