@@ -1,16 +1,16 @@
+/*
+✨세션 정리 (작성자: 이다현)
+사용자 정보(members): user
+매장 정보(stores): store
+상품 정보(products): product
+주간 출고량(week_sum_ship_cnt): shipment_week
+주간 출고량(month_sum_ship_cnt): shipment_month
+*/
+
 const express = require("express");
 const router = express.Router();
 const app = express();
 const conn = require("../config/database");
-
-// 미들웨어
-/* app.use((req, res) => {
-  res.locals.data = {
-    user: req.session.user,
-    store: req.session.store
-  }
-  // console.log("회원 이름: ", res.locals.user.m_name);
-}) */
 
 // Main Page 열기
 router.get("/", async (req, res) => {

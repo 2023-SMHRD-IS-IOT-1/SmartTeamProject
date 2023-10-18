@@ -1,3 +1,12 @@
+/*
+✨세션 정리 (작성자: 이다현)
+사용자 정보(members): user
+매장 정보(stores): store
+상품 정보(products): product
+주간 출고량(week_sum_ship_cnt): shipment_week
+주간 출고량(month_sum_ship_cnt): shipment_month
+*/
+
 const express = require("express");
 const router = express.Router();
 const conn = require("../config/database");
