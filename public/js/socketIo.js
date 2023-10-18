@@ -7,17 +7,31 @@ if (badgeCount) {
   document.getElementById('badgeCount').innerText = badgeCount;
 }
 
+// 빈값이면 모달 창 안열림
+const badgeCountDom = document.getElementById('badgeCount')
+const stockModalDom = document.getElementById('stockModal')
+
+if (badgeCountDom.innerText === ''){
+  // badgeCount가 비어있는 경우 모달을 열지 않음
+  stockModal.style.display = 'none';
+} else{
+  stockModal.style.display = 'block';
+}
+
 // 서버로 메시지 전송
 // socket.emit("message", "안녕, 서버!");
 
 // 서버로부터 응답 받을 때 처리
 socket.on("lowStock", (data) => {
   console.log("서버로부터 응답 받음:", data);
-  if (data != parseInt(document.getElementById('badgeCount').innerText)) {
-    document.getElementById('badgeCount').innerText = data
+  if (data === 0) {
+    badgeCountDom.innerText = ''
+  } else if (data != parseInt(badgeCountDom.innerText)) {
+    badgeCountDom.innerText = data
 
-    document.getElementById('alertsDropdown').click();
-
+    if (badgeCountDom.innerText != '') {
+      document.getElementById('alertsDropdown').click();
+    }
     // 세션 스토리지에 "badgeCount" 값 저장
     sessionStorage.setItem("badgeCount", data);
   }
