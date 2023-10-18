@@ -4,7 +4,7 @@ const app = express();
 // Express 앱을 HTTP 서버로 래핑
 const http = require('http').createServer(app);
 // HTTP 서버를 Socket.IO 서버로 래핑
-const io = require('socket.io')(http,{
+const io = require('socket.io')(http, {
   path: '/socket.io'
 });
 
@@ -20,7 +20,6 @@ const fileStore = require("session-file-store")(session);
 const indexRouter = require("./routes");
 const userRouter = require("./routes/user");
 const arduinoRouter = require("./routes/arduino");
-
 
 const cors = require("cors");
 
@@ -49,7 +48,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.use(
   session({
-    saveUninitialized:false,
+    saveUninitialized: false,
     httpOnly: true,
     resave: false,
     secret: "secret",
@@ -64,26 +63,48 @@ app.use("/arduino", arduinoRouter);
 // 알림 기준 재고량 
 const stockAlertOption = 3;
 
+// 연결된 클라이언트 저장
+const connectedClients = {};
+
 // 클라이언트 연결 시
 io.on("connection", (socket) => {
-  console.log("클라이언트가 연결되었습니다.");
+  console.log("소켓 ID :", socket.id, "클라이언트가 연결되었습니다.");
+
+  // 클라이언트 연결 시 소켓을 저장
+  connectedClients[socket.id] = socket;
 
   // 클라이언트로부터 메시지를 받았을 때 처리
-  socket.on("message", (data) => {
-    // console.log("클라이언트가 주는 메시지:", data);
+  /* socket.on("message", (data) => {
+    console.log("클라이언트가 주는 메시지:", data);
 
     // 클라이언트로 응답 보내기
-    // socket.emit("response", "hello");
+    socket.emit("response", "hello");
+  }); */
+
+  socket.on("disconnect", () => {
+    // 클라이언트 연결 종료 시 소켓을 제거
+    delete connectedClients[socket.id];
   });
 
+  let isSendingData = false; // 데이터를 보내는 동안 true로 설정
+
   function sendStock() {
+    if (isSendingData) {
+      // 데이터를 보내는 중이라면 다음 호출을 기다립니다.
+      return;
+    }
+
+    isSendingData = true; // 데이터 보내는 중으로 표시
+
     const isPStockSql = 'select * from products where store_code = 1 and p_cnt <= ?'
-    conn.query(isPStockSql, [stockAlertOption],  ( err,row ) => { 
-      // console.log( "row.length :", row.length ) 
+    conn.query(isPStockSql, [stockAlertOption], (err, row) => {
+      console.log("소켓 ID :", socket.id, "row.length :", row.length)
 
       // 클라이언트로 데이터를 보내기
       socket.emit("lowStock", row.length);
-    } )
+
+      isSendingData = false; // 데이터 보내기 완료로 표시
+    })
   }
   // 1분마다 갱신
   setInterval(sendStock, 60000);

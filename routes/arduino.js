@@ -2,9 +2,6 @@ const express = require("express");
 const router = express.Router();
 const conn = require("../config/database");
 
-// 재고량이 부족한 상품의 p_code가 저장되어있는 세션
-// req.session.ShelfLowInventoryAlert
-
 // 데이터 인지 여부 변수 선언
 let isDataConnecting = false;
 
@@ -35,7 +32,7 @@ router.post('/sendData', (req, res) => {
   conn.query(isSendProductDataSql, [store_code], (err, row) => {
     // console.log("isSendProductDataSql row :", row)
     // console.log( "receiveSensorData :",receiveSensorData );
-    for ( const productData of row){
+    for (const productData of row) {
       // console.log( "productData",productData );
 
       // productData는 상품의 정보
@@ -62,7 +59,7 @@ router.post('/sendData', (req, res) => {
         const isSendShipmentDataSql = 'INSERT INTO shipments ( p_code, ship_type, ship_cnt ) VALUES ( ?, ?, ? )'
         // 입출고 타입 정의
         const ship_type = p_cnt - isSensorCount > 0 ? "O" : "I"
-        
+
         conn.query(isSendShipmentDataSql, [p_code, ship_type, Math.abs(p_cnt - isSensorCount)], (err, row) => {
           // console.log("isSendShipmentDataSql row:", row);
           if (row.affectedRows > 0) {
