@@ -14,7 +14,7 @@ const conn = require("../config/database");
 
 // Main Page 열기
 router.get("/", (req, res) => {
-  let sql_m = 'select * from members where m_id=? and m_pw=?'
+  /* let sql_m = 'select * from members where m_id=? and m_pw=?'
   let sql_s = 'select * from stores where m_id=?'
   let sql_p = "select * from products where store_code=?"
   let sql_ship = 'select * from shipments where p_code=?'
@@ -50,7 +50,7 @@ router.get("/", (req, res) => {
         })
       }
     })
-  })
+  }) */
 
   if (req.session.user != undefined) {
     res.render('index', data);
