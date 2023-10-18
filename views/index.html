@@ -181,9 +181,10 @@
                 </div>
                 <div class="card-body list">
                     <div class="table-responsive">
-                        <div  class="user mg">
+                        <div class="user mg">
 
-                            <table class="table table-bordered table table-striped" id="dataTable" width="100%" cellspacing="0">
+                            <table class="table table-bordered table table-striped" id="dataTable" width="100%"
+                                cellspacing="0">
                                 <thead>
                                     <tr>
                                         <th>상품 분류</th>
@@ -193,12 +194,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for item in product%}
+                                    {% for p_item in product%}
                                     <tr>
                                         <td>{{ item.p_category }}</td>
                                         <td>{{ item.p_name }}</td>
                                         <td>{{ item.p_cnt }}</td>
-                                        <!-- <td>{{ item.ship_cnt }}</td> -->
+                                        <td>
+                                            {% for s_item in shipment %}
+                                            {% if s_item.p_code == p_item.p_code%}
+                                            {{s_item.month_sum_ship_cnt}}
+                                            {% endif %}
+                                            {% endfor %}
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
