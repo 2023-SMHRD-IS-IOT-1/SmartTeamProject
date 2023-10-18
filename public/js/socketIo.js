@@ -22,3 +22,8 @@ socket.on("lowStock", (data) => {
     sessionStorage.setItem("badgeCount", data);
   }
 });
+
+// 창이 닫힐 때 소켓 연결 종료
+window.addEventListener("beforeunload", () => {
+  socket.disconnect();
+});

@@ -40,7 +40,6 @@ router.get("/", async (req, res) => { //
       const shipWeekPromises = p_rows.map(async (pData) => {
         let p_code = pData.p_code;
         const ship_rows_week = await queryAsync(conn, sql_ship_week, [p_code]);
-        req.session.shipment_week = ship_rows_week;
         data.shipment_week.push(ship_rows_week[0]);
         // console.log('index-js / p_rows: ', req.session.shipment_week);
       });
@@ -48,15 +47,17 @@ router.get("/", async (req, res) => { //
       const shipMonthPromises = p_rows.map(async (pData) => {
         let p_code = pData.p_code;
         const ship_rows_month = await queryAsync(conn, sql_ship_month, [p_code]);
-        req.session.shipment_month = ship_rows_month;
         data.shipment_month.push(ship_rows_month[0]);
         // console.log('index-js / ship_rows_month: ', req.session.shipment_month);
       });
-
+      
       // Promise.all()은 배열 내의 모든 Promise 객체가 완료될 때까지 기다리는 메서드입니다. 
       // 즉, 배열에 있는 모든 작업이 완료될 때까지 대기합니다.
       await Promise.all([...shipWeekPromises, ...shipMonthPromises]);
+      req.session.shipment_week = data.shipment_week;
+      req.session.shipment_month = data.shipment_month;
       // console.log("index-js / data.shipment_week :", data.shipment_week);
+      // console.log("index-js / req.session.shipment_week :", req.session.shipment_week);
       // console.log("index-js / data.shipment_month :", data.shipment_month);
       res.render('index', data);
 
@@ -165,5 +166,11 @@ router.get("/register", (req, res) => {
 router.get("/login", (req, res) => {
   res.render("login");
 });
+
+// 차트 렌더용 
+router.get("/piechart",  ( req,res ) => { 
+  res.json(req.session.shipment_week)
+  console.log( "index.js 차트용 : ",req.session.shipment_week ) 
+} )
 
 module.exports = router;

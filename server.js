@@ -64,9 +64,12 @@ app.use("/arduino", arduinoRouter);
 
 // 알림 기준 재고량 
 const stockAlertOption = 3;
-
+// 알림 보내는 주기(ms)
+const Intervaltime = 5000;
 // 연결된 클라이언트 저장
 const connectedClients = {};
+// 연결된 클라이언트에 따른 setInterval 저장
+const socketTimers = {};
 
 // 클라이언트 연결 시
 io.on("connection", (socket) => {
@@ -83,7 +86,16 @@ io.on("connection", (socket) => {
     socket.emit("response", "hello");
   }); */
 
+
   socket.on("disconnect", () => {
+    console.log("클라이언트 연결 종료:", socket.id);
+
+    // 소켓 ID에 연결된 타이머 중지
+    if (socketTimers[socket.id]) {
+      clearInterval(socketTimers[socket.id]);
+      delete socketTimers[socket.id];
+    }
+
     // 클라이언트 연결 종료 시 소켓을 제거
     delete connectedClients[socket.id];
   });
@@ -109,7 +121,8 @@ io.on("connection", (socket) => {
     })
   }
   // 1분마다 갱신
-  setInterval(sendStock, 5000);
+  const timerId = setInterval(sendStock, Intervaltime);
+  socketTimers[socket.id] = timerId;
 });
 
 http.listen(app.get("port"), () => {
