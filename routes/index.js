@@ -14,59 +14,59 @@ const conn = require("../config/database");
 
 // Main Page 열기
 router.get("/", (req, res) => {
-    if (req.session.user != undefined) {
-        let sql_m = 'select * from members where m_id=? and m_pw=?'
-        let sql_s = 'select * from stores where m_id=?'
-        let sql_p = "select * from products where store_code=?"
-        let sql_ship_week = 'SELECT SUM(ship_cnt) AS week_sum_ship_cnt FROM shipments WHERE p_code = ? AND ship_date >= DATE_ADD(CURDATE(), INTERVAL -7 DAY);'
-        let sql_ship_month = 'SELECT SUM(ship_cnt) AS month_sum_ship_cnt FROM shipments WHERE p_code = ? AND ship_date >= DATE_ADD(CURDATE(), INTERVAL -30 DAY);'
+  if (req.session.user != undefined) {
+    let sql_m = 'select * from members where m_id=? and m_pw=?'
+    let sql_s = 'select * from stores where m_id=?'
+    let sql_p = "select * from products where store_code=?"
+    let sql_ship_week = 'SELECT SUM(ship_cnt) AS week_sum_ship_cnt FROM shipments WHERE p_code = ? AND ship_date >= DATE_ADD(CURDATE(), INTERVAL -7 DAY);'
+    let sql_ship_month = 'SELECT SUM(ship_cnt) AS month_sum_ship_cnt FROM shipments WHERE p_code = ? AND ship_date >= DATE_ADD(CURDATE(), INTERVAL -30 DAY);'
 
-        let m_id = req.session.user.m_id
-        let m_pw = req.session.user.m_pw
-        let data = {};
-        conn.query(sql_m, [m_id, m_pw], (err, m_rows) => {
-            req.session.user = m_rows[0];
-            data.user = req.session.user
-            console.log('메인화면/ 회원 세션: ', req.session.user);
-            conn.query(sql_s, [m_id], (err, s_rows) => {
-                if (s_rows.length > 0) {
-                    req.session.store = s_rows[0];
-                    data.store = req.session.store
-                    console.log('메인화면/ 매장: ', req.session.store);
-                    let store_code = req.session.store.store_code;
-                    conn.query(sql_p, [store_code], (err, p_rows) => {
-                        req.session.product = p_rows;
-                        data.product = req.session.product
-                        console.log('메인화면/ 상품: ', req.session.product);
-                        for (const pData of p_rows) {
-                            let p_code = pData.p_code;
-                            conn.query(sql_ship_week, [p_code], (err, ship_rows_week) => {
-                                req.session.shipment_week = ship_rows_week;
-                                data.shipment_week = ship_rows_week;
-                                console.log('메인화면/ 출고Week: ', req.session.shipment_week);
-                                conn.query(sql_ship_month, [p_code], (err, ship_rows_month) => {
-                                    req.session.shipment_month = ship_rows_month;
-                                    data.shipment_month = ship_rows_month;
-                                    console.log('메인화면/ 출고Month: ', req.session.shipment_month);
-                                })
-                            })
-                        }
-                        console.log("주간 매장 :", data.shipment_week);
-                        console.log("월간 매장 :", data.shipment_month);
-                        // console.log("index로 보내주는 데이터", data);
-                        res.render('index', data);
-                    })
-                }
-            })
-        })
-
-
+    let m_id = req.session.user.m_id
+    let m_pw = req.session.user.m_pw
+    let data = {};
+    conn.query(sql_m, [m_id, m_pw], (err, m_rows) => {
+      req.session.user = m_rows[0];
+      data.user = req.session.user
+      console.log('메인화면/ 회원 세션: ', req.session.user);
+      conn.query(sql_s, [m_id], (err, s_rows) => {
+        if (s_rows.length > 0) {
+          req.session.store = s_rows[0];
+          data.store = req.session.store
+          console.log('메인화면/ 매장: ', req.session.store);
+          let store_code = req.session.store.store_code;
+          conn.query(sql_p, [store_code], (err, p_rows) => {
+            req.session.product = p_rows;
+            data.product = req.session.product
+            console.log('메인화면/ 상품: ', req.session.product);
+            for (const pData of p_rows) {
+              let p_code = pData.p_code;
+              conn.query(sql_ship_week, [p_code], (err, ship_rows_week) => {
+                req.session.shipment_week = ship_rows_week;
+                data.shipment_week = ship_rows_week;
+                console.log('메인화면/ 출고Week: ', req.session.shipment_week);
+                conn.query(sql_ship_month, [p_code], (err, ship_rows_month) => {
+                  req.session.shipment_month = ship_rows_month;
+                  data.shipment_month = ship_rows_month;
+                  console.log('메인화면/ 출고Month: ', req.session.shipment_month);
+                })
+              })
+            }
+            console.log("주간 매장 :", data.shipment_week);
+            console.log("월간 매장 :", data.shipment_month);
+            // console.log("index로 보내주는 데이터", data);
+            res.render('index', data);
+          })
+        }
+      })
+    })
 
 
-    }
-    else {
-        res.redirect("/login");
-    }
+
+
+  }
+  else {
+    res.redirect("/login");
+  }
 })
 
 
@@ -196,35 +196,35 @@ router.get("/", (req, res) => {
 // 상품 입력 Page 열기
 router.get("/itemManage", (req, res) => {
 
-    const data = {
-        user: req.session.user,
-        store: req.session.store,
-        product: req.session.product,
-        ship: req.session.shipment
-    }
-    console.log(data);
-    res.render("itemManage", data);
+  const data = {
+    user: req.session.user,
+    store: req.session.store,
+    product: req.session.product,
+    ship: req.session.shipment
+  }
+  console.log(data);
+  res.render("itemManage", data);
 });
 
 //마이페이지
 router.get("/myPage", (req, res) => {
-    const data = {
-        user: req.session.user,
-        store: req.session.store,
-        product: req.session.product,
-        ship: req.session.shipment
-    }
-    res.render("myPage", data);
+  const data = {
+    user: req.session.user,
+    store: req.session.store,
+    product: req.session.product,
+    ship: req.session.shipment
+  }
+  res.render("myPage", data);
 });
 
 // 회원가입 Page 열기
 router.get("/register", (req, res) => {
-    res.render("register");
+  res.render("register");
 });
 
 //로그인하기
 router.get("/login", (req, res) => {
-    res.render("login");
+  res.render("login");
 });
 
 module.exports = router;
