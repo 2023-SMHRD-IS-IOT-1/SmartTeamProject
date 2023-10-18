@@ -1,10 +1,7 @@
 const socket = io(); // 서버에 연결
 
-// let modalShown = false;
-
 // 세션 스토리지에서 "badgeCount" 값 읽기
 const badgeCount = sessionStorage.getItem("badgeCount");
-
 
 if (badgeCount) {
   document.getElementById('badgeCount').innerText = badgeCount;

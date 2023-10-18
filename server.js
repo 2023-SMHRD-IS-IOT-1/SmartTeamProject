@@ -29,13 +29,6 @@ app.use(cors());
 app.set("port", process.env.PORT || 3333);
 app.set("view engine", "html");
 
-// 세션 설정
-app.use(session({
-  secret: 'your_secret_key',
-  resave: false,
-  saveUninitialized: true,
-}));
-
 // Nunjucks 템플릿 설정
 nunjucks.configure("views", {
   express: app,
@@ -46,13 +39,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + "/public"));
 
-app.use(
+// 세션 설정
+/* app.use(
   session({
     saveUninitialized: false,
     httpOnly: true,
     resave: false,
     secret: "secret",
     store: new fileStore(),
+  })
+); */
+
+app.use(
+  session({
+    saveUninitialized: true,
+    resave: false,
+    secret: "secret",
   })
 );
 
@@ -107,7 +109,7 @@ io.on("connection", (socket) => {
     })
   }
   // 1분마다 갱신
-  setInterval(sendStock, 60000);
+  setInterval(sendStock, 5000);
 });
 
 http.listen(app.get("port"), () => {

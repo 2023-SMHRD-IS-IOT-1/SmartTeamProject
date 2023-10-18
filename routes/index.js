@@ -33,7 +33,7 @@ router.get("/", async (req, res) => { //
       const p_rows = await queryAsync(conn, sql_p, [store_code]);
       req.session.product = p_rows;
       data.product = p_rows;
-      console.log('index-js / p_rows: ', p_rows);
+      // console.log('index-js / p_rows: ', p_rows);
       data.shipment_week = [];
       data.shipment_month = [];
 
@@ -42,7 +42,7 @@ router.get("/", async (req, res) => { //
         const ship_rows_week = await queryAsync(conn, sql_ship_week, [p_code]);
         req.session.shipment_week = ship_rows_week;
         data.shipment_week.push(ship_rows_week[0]);
-        console.log('index-js / p_rows: ', req.session.shipment_week);
+        // console.log('index-js / p_rows: ', req.session.shipment_week);
       });
 
       const shipMonthPromises = p_rows.map(async (pData) => {
@@ -50,7 +50,7 @@ router.get("/", async (req, res) => { //
         const ship_rows_month = await queryAsync(conn, sql_ship_month, [p_code]);
         req.session.shipment_month = ship_rows_month;
         data.shipment_month.push(ship_rows_month[0]);
-        console.log('index-js / ship_rows_month: ', req.session.shipment_month);
+        // console.log('index-js / ship_rows_month: ', req.session.shipment_month);
       });
 
       // Promise.all()은 배열 내의 모든 Promise 객체가 완료될 때까지 기다리는 메서드입니다. 
@@ -60,7 +60,7 @@ router.get("/", async (req, res) => { //
       // console.log("index-js / data.shipment_month :", data.shipment_month);
       res.render('index', data);
 
-      console.log("index로 보내주는 데이터", data);
+      // console.log("index.js - index로 보내주는 데이터", data);
 
     } catch (err) {
       console.error(err);
