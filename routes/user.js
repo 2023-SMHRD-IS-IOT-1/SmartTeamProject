@@ -80,45 +80,23 @@ router.post("/login", (req, res) => {
 		// console.log(rows)
 		if (m_rows.length > 0) { //if(rows)가 안되는 이유: rows는 로그인에 실패해도 뜸
 			req.session.user = m_rows[0];
-			console.log('회원 세션 정보: ', req.session.user);
+			// console.log('회원 세션 정보: ', req.session.user);
 
-		
+
 			conn.query(sql_s, [m_id], (err, s_rows) => {
 				if (s_rows.length > 0) {
-			            req.session.store = s_rows[0];
-						console.log('매장 세션 정보: ', req.session.store);
-						
-						let store_code=req.session.store.store_code;	
-						conn.query(sql_p, [store_code], (err, p_rows) => {
-							req.session.product = p_rows;
-							console.log('상품 세션 정보: ', req.session.product);
-							
-						// let p_code=req.session.product.p_code;
-						// conn.query(sql_ship, [p_code], (err, ship_rows) => {
-						// 	if(err){
-						// 		console.log("출고err:",err);
-						// 	}else{
-						// 	req.session.shipment = ship_rows;
-						// 	console.log('출고 세션 정보: ', req.session.shipment);
-						// 	console.log('로그인 성공')
-							req.session.save(() => {
-										res.send(`
+					req.session.store = s_rows[0];
+
+					console.log('로그인 성공')
+					req.session.save(() => {
+						res.send(`
 									<script>
 									alert("${m_rows[0].m_name}님 환영합니다.");location.href="/"
 									</script>>`)
-										})
-						// 			}
-						// })
 					})
 				} else {
 					console.log('매장 정보 부재')
 				}
-				// req.session.name=rows[0].username;
-
-				//      4-2) 로그인이 성공했다면, 해당 유저의 정보를 세션에 저장 (id, nick, address)
-				//      4-3) 환영합니다! alert => 메인으로 이동
-				// 5. 데이터가 존재하지 않는다면 로그인 실패
-
 			})
 		} else {
 			console.log('로그인 실패')
