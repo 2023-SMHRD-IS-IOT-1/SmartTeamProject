@@ -93,22 +93,22 @@ router.post("/login", (req, res) => {
 							req.session.product = p_rows;
 							console.log('상품 세션 정보: ', req.session.product);
 							
-						let p_code=req.session.product.p_code;
-						conn.query(sql_ship, [p_code], (err, ship_rows) => {
-							if(err){
-								console.log("출고err:",err);
-							}else{
-							req.session.shipment = ship_rows;
-							console.log('출고 세션 정보: ', req.session.shipment);
-							console.log('로그인 성공')
+						// let p_code=req.session.product.p_code;
+						// conn.query(sql_ship, [p_code], (err, ship_rows) => {
+						// 	if(err){
+						// 		console.log("출고err:",err);
+						// 	}else{
+						// 	req.session.shipment = ship_rows;
+						// 	console.log('출고 세션 정보: ', req.session.shipment);
+						// 	console.log('로그인 성공')
 							req.session.save(() => {
 										res.send(`
 									<script>
 									alert("${m_rows[0].m_name}님 환영합니다.");location.href="/"
 									</script>>`)
 										})
-									}
-						})
+						// 			}
+						// })
 					})
 				} else {
 					console.log('매장 정보 부재')
