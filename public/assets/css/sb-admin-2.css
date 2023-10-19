@@ -9624,6 +9624,13 @@ a.text-success:hover, a.text-success:focus {
 a.text-info:hover, a.text-info:focus {
   color: #258391 !important;
 }
+.text-four {
+  color: red !important;
+}
+
+a.text-four:hover, a.text-four:focus {
+  color: red !important;
+}
 
 .text-warning {
   color: #f6c23e !important;
