@@ -74,3 +74,6 @@
     display: flex;
     justify-content: space-between;
 }
+.width{
+    width: 400px;
+}
