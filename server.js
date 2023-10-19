@@ -53,7 +53,7 @@ app.use(express.static(__dirname + "/public"));
 const sessionMiddleware = session({
   saveUninitialized: true,
   resave: false,
-  secret: "secret",
+  secret: "secret"
 })
 
 app.use(sessionMiddleware);
@@ -66,8 +66,6 @@ app.use("/arduino", arduinoRouter);
 // ---------------- 웹 소켓 구현 파트 -----------------------------------
 // 알림 기준 재고량 
 const stockAlertOption = 3;
-// 알림 보내는 주기(ms)
-const Intervaltime = 5000;
 // 연결된 클라이언트 저장
 const connectedClients = {};
 // 연결된 클라이언트에 따른 setInterval 저장
@@ -83,7 +81,7 @@ io.on("connection", (socket) => {
   // 세션 접속
   const session = socket.request.session;
   const {store_code} = session.store || {};
-  // console.log("server.js - store_code :", store_code)
+  console.log("server.js - store_code :", store_code)
 
   // 클라이언트 연결 시 소켓을 저장
   connectedClients[socket.id] = socket;
@@ -122,7 +120,7 @@ io.on("connection", (socket) => {
 
     const isPStockSql = 'select * from products where store_code = ? and p_cnt <= ?'
     conn.query(isPStockSql, [store_code,stockAlertOption], (err, row) => {
-      // console.log("소켓 ID :", socket.id, "row.length :", row.length)
+      console.log("소켓 ID :", socket.id, "row.length :", row.length)
 
       // 클라이언트로 데이터를 보내기
       socket.emit("lowStock", row.length);
@@ -130,9 +128,10 @@ io.on("connection", (socket) => {
       isSendingData = false; // 데이터 보내기 완료로 표시
     })
   }
-  // 1분마다 갱신
-  if (store_code != {}) {
-    const timerId = setInterval(sendStock, Intervaltime);
+
+  // Intervaltime에 정의된 주기마다 갱신
+  if (store_code != undefined) {
+    const timerId = setInterval(sendStock, 5000);
     socketTimers[socket.id] = timerId;
   }
 });
