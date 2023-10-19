@@ -29,13 +29,6 @@ app.use(cors());
 app.set("port", process.env.PORT || 3333);
 app.set("view engine", "html");
 
-// 세션 설정
-app.use(session({
-  secret: 'your_secret_key',
-  resave: false,
-  saveUninitialized: true,
-}));
-
 // Nunjucks 템플릿 설정
 nunjucks.configure("views", {
   express: app,
@@ -46,7 +39,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + "/public"));
 
-app.use(
+// 세션 설정
+/* app.use(
   session({
     saveUninitialized: false,
     httpOnly: true,
@@ -54,21 +48,40 @@ app.use(
     secret: "secret",
     store: new fileStore(),
   })
-);
+); */
+
+const sessionMiddleware = session({
+  saveUninitialized: true,
+  resave: false,
+  secret: "secret"
+})
+
+app.use(sessionMiddleware);
 
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/arduino", arduinoRouter);
 
+
+// ---------------- 웹 소켓 구현 파트 -----------------------------------
 // 알림 기준 재고량 
 const stockAlertOption = 3;
-
 // 연결된 클라이언트 저장
 const connectedClients = {};
+// 연결된 클라이언트에 따른 setInterval 저장
+const socketTimers = {};
+
+// 세션 연결
+io.engine.use(sessionMiddleware)
 
 // 클라이언트 연결 시
 io.on("connection", (socket) => {
   console.log("소켓 ID :", socket.id, "클라이언트가 연결되었습니다.");
+
+  // 세션 접속
+  const session = socket.request.session;
+  const {store_code} = session.store || {};
+  console.log("server.js - store_code :", store_code)
 
   // 클라이언트 연결 시 소켓을 저장
   connectedClients[socket.id] = socket;
@@ -81,7 +94,16 @@ io.on("connection", (socket) => {
     socket.emit("response", "hello");
   }); */
 
+
   socket.on("disconnect", () => {
+    console.log("클라이언트 연결 종료:", socket.id);
+
+    // 소켓 ID에 연결된 타이머 중지
+    if (socketTimers[socket.id]) {
+      clearInterval(socketTimers[socket.id]);
+      delete socketTimers[socket.id];
+    }
+
     // 클라이언트 연결 종료 시 소켓을 제거
     delete connectedClients[socket.id];
   });
@@ -96,8 +118,8 @@ io.on("connection", (socket) => {
 
     isSendingData = true; // 데이터 보내는 중으로 표시
 
-    const isPStockSql = 'select * from products where store_code = 1 and p_cnt <= ?'
-    conn.query(isPStockSql, [stockAlertOption], (err, row) => {
+    const isPStockSql = 'select * from products where store_code = ? and p_cnt <= ?'
+    conn.query(isPStockSql, [store_code,stockAlertOption], (err, row) => {
       console.log("소켓 ID :", socket.id, "row.length :", row.length)
 
       // 클라이언트로 데이터를 보내기
@@ -106,9 +128,16 @@ io.on("connection", (socket) => {
       isSendingData = false; // 데이터 보내기 완료로 표시
     })
   }
-  // 1분마다 갱신
-  setInterval(sendStock, 60000);
+
+  // Intervaltime에 정의된 주기마다 갱신
+  if (store_code != undefined) {
+    const timerId = setInterval(sendStock, 5000);
+    socketTimers[socket.id] = timerId;
+  }
 });
+
+// ---------------- 웹 소켓 구현 파트 끝 -----------------------------------
+
 
 http.listen(app.get("port"), () => {
   console.log(app.get("port") + "번 포트에서 대기 중..");

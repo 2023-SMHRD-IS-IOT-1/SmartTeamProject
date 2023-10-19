@@ -5,13 +5,13 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-    </div>
-    <!-- Content Row -->
+	<!-- Page Heading -->
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+	</div>
+	<!-- Content Row -->
 
-    <div class="row">
+	<div class="row">
 
         <!-- Area Chart -->
         <div class="col-xl-8 col-lg-7">
@@ -71,7 +71,7 @@
                         <canvas id="myPieChart"></canvas>
                     </div>
                     <div class="mt-4 text-center small">
-                        <span class="mr-2">
+                        <!-- <span class="mr-2">
                             <i class="fas fa-circle text-primary"></i> Direct
                         </span>
                         <span class="mr-2">
@@ -79,66 +79,120 @@
                         </span>
                         <span class="mr-2">
                             <i class="fas fa-circle text-info"></i> Referral
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
+						</span> -->
+					</div>
+				</div>
+			</div>
+		</div>
 
-        <div class="col-xl-6 col-lg-10 fw" id="content">
+		<div class="col-xl-6 col-lg-10 fw" id="content">
 
-            <div class="card shadow mb-4 size">
+			<div class="card shadow mb-4 size">
 
-                <div class="card-header py-3">
-                    <h5 class="m-0 font-weight-bold text-primary">상품 목록</h5>
-                </div>
-                <div class="card-body list">
-                    <div class="table-responsive">
-                        <div class="user mg">
+				<div class="card-header py-3">
+					<h5 class="m-0 font-weight-bold text-primary">상품 목록</h5>
+				</div>
+				<div class="card-body list">
+					<div class="table-responsive">
+						<div class="user mg">
 
-                            <table class="table table-bordered table table-striped" id="dataTable" width="100%"
-                                cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>상품 분류</th>
-                                        <th>제품명</th>
-                                        <th>재고량</th>
-                                        <th>주간 누적 판매량</th>
-                                        <th>월간 누적 판매량</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for p_item in product%}
-                                    <tr>
-                                        <td>{{ p_item.p_category }}</td>
-                                        <td>{{ p_item.p_name }}</td>
-                                        <td>{{ p_item.p_cnt }}</td>
-                                        <td>
-                                            {% for w_item in shipment_week %}
-                                            {% if w_item.p_code == p_item.p_code%}
-                                            {{w_item.week_sum_ship_cnt}}
-                                            {% endif %}
-                                            {% endfor %}
-                                        </td>
-                                        <td>
-                                            {% for m_item in shipment_month %}
-                                            {% if m_item.p_code == p_item.p_code%}
-                                            {{m_item.month_sum_ship_cnt}}
-                                            {% endif %}
-                                            {% endfor %}
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+							<table class="table table-bordered table table-striped" id="dataTable" width="100%"
+								cellspacing="0">
+								<thead>
+									<tr>
+										<th>상품 분류</th>
+										<th>제품명</th>
+										<th>재고량</th>
+										<th>주간 누적 판매량</th>
+										<th>월간 누적 판매량</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for p_item in product%}
+									<tr>
+										<td>{{ p_item.p_category }}</td>
+										<td>{{ p_item.p_name }}</td>
+										<td>{{ p_item.p_cnt }}</td>
+										<td>
+											{% for w_item in shipment_week %}
+											{% if w_item.p_code == p_item.p_code%}
+											{{w_item.week_sum_ship_cnt}}
+											{% endif %}
+											{% endfor %}
+										</td>
+										<td>
+											{% for m_item in shipment_month %}
+											{% if m_item.p_code == p_item.p_code%}
+											{{m_item.month_sum_ship_cnt}}
+											{% endif %}
+											{% endfor %}
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+							</form>
+						</div>
+					</div>
+				</div>
 
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+	</div>
 
+	<script>
+	// DOMContentLoaded 이벤트를 사용하여 페이지 로드 후 실행
+	document.addEventListener("DOMContentLoaded", () => {
+		fetch("/piechart")
+			.then(response => response.json())
+			.then(data => {
+				let p_codeArray = [];
+				let week_sum_ship_cntArray = [];
 
-    {% endblock %}
+				data.forEach(item => {
+					p_codeArray.push(item.p_code);
+					week_sum_ship_cntArray.push(item.week_sum_ship_cnt);
+				});
+
+				// 차트 초기화
+				var ctx = document.getElementById("myPieChart").getContext("2d");
+				var myPieChart = new Chart(ctx, {
+					type: "doughnut",
+					data: {
+						labels: p_codeArray,
+						datasets: [{
+						data: week_sum_ship_cntArray,
+							backgroundColor: ["#FF5733", "#FFC300", "#33FF57", "#3363FF", "#FF33E0"],
+						}],
+					},
+					options: {
+						maintainAspectRatio: false,
+						tooltips: {
+							backgroundColor: "rgb(255,255,255)",
+							bodyFontColor: "#858796",
+							borderColor: '#dddfeb',
+							borderWidth: 1,
+							xPadding: 15,
+							yPadding: 15,
+							displayColors: false,
+							caretPadding: 10,
+						},
+						cutoutPercentage: 80,
+						plugins: {
+							legend: {
+								position: 'bottom' // 라벨 위치를 아래로 설정
+							}
+						}
+					}
+				});
+
+				// 도넛 차트 업데이트
+				myPieChart.update();
+			})
+			.catch(error => {
+				console.error("데이터 가져오기 오류:", error);
+			});
+	});
+	</script>
+
+	{% endblock %}

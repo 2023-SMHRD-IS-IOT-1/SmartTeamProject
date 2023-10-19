@@ -75,6 +75,20 @@ function queryAsync(connection, sql, params) {
     });
 }
 
+// 유틸리티 함수로 쿼리 실행을 Promise로 감싸기
+function queryAsync(connection, sql, params) {
+  // 비동기 실행
+  return new Promise((resolve, reject) => {
+    connection.query(sql, params, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
+
 // 상품 입력 Page 열기
 router.get("/itemManage", (req, res) => {
     if (req.session.user != undefined) {
@@ -111,12 +125,18 @@ router.get("/myPage", (req, res) => {
 
 // 회원가입 Page 열기
 router.get("/register", (req, res) => {
-    res.render("register");
+  res.render("register");
 });
 
 //로그인하기
 router.get("/login", (req, res) => {
-    res.render("login");
+  res.render("login");
 });
+
+// 차트 렌더용 
+router.get("/piechart",  ( req,res ) => { 
+  res.json(req.session.shipment_week)
+  // console.log( "index.js 차트용 : ",req.session.shipment_week ) 
+} )
 
 module.exports = router;
