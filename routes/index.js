@@ -170,7 +170,7 @@ router.get("/login", (req, res) => {
 // 차트 렌더용 
 router.get("/piechart",  ( req,res ) => { 
   res.json(req.session.shipment_week)
-  console.log( "index.js 차트용 : ",req.session.shipment_week ) 
+  // console.log( "index.js 차트용 : ",req.session.shipment_week ) 
 } )
 
 module.exports = router;
