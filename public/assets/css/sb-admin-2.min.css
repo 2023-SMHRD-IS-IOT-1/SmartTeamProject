@@ -12082,7 +12082,7 @@ a:focus {
     position: relative;
     height: 12rem;
     width: 100%;
-    overflow: auto;
+    overflow: hidden auto;
 }
 
 @media (min-width:768px) {

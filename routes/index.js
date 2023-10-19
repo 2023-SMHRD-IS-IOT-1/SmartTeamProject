@@ -21,8 +21,10 @@ router.get("/", async (req, res) => {
 
         const { m_id, m_pw } = req.session.user
         let { store_code } = req.session.store
-        let data = {user: req.session.user,
-                    store: req.session.store};
+        let data = {
+            user: req.session.user,
+            store: req.session.store
+        };
         try {
             const p_rows = await queryAsync(conn, sql_p, [store_code]);
             req.session.product = p_rows;
@@ -72,76 +74,39 @@ function queryAsync(connection, sql, params) {
         });
     });
 }
-// --------------------------------
-// router.get("/", async (req, res) => {
-//   let sql_m = 'select * from members where m_id=? and m_pw=?';
-//   let sql_s = 'select * from stores where m_id=?';
-//   let sql_p = "select * from products where store_code=?";
-//   let sql_ship = 'select * from shipments where p_code=?';
-//   let m_id = req.session.user.m_id;
-//   let m_pw = req.session.user.m_pw;
-
-//   try {
-//     const m_rows = await query(sql_m, [m_id, m_pw]);
-//     req.session.user = m_rows[0];
-//     console.log('메인화면/ 회원 세션: ', req.session.user);
-
-//     const s_rows = await query(sql_s, [m_id]);
-//     if (s_rows.length > 0) {
-//       req.session.store = s_rows[0];
-//       console.log('메인화면/ 매장: ', req.session.store);
-
-//       let store_code = req.session.store.store_code;
-//       const p_rows = await query(sql_p, [store_code]);
-//       req.session.product = p_rows;
-//       console.log('메인화면/ 상품: ', req.session.product);
-//       let shipmentData = []; // 출고 정보를 저장할 배열
-
-//       for (let i = 0; i < p_rows.length; i++) {
-//         const p_code = p_rows[i].p_code;
-//         const ship_rows = await query(sql_ship, [p_code]);
-//         shipmentData.push(ship_rows); // 각 상품의 출고 정보를 배열에 추가
-//         console.log('메인화면/ 출고: ', ship_rows);
-//       }
-
-//       req.session.shipment = shipmentData; // 모든 출고 정보를 세션에 할당
-
-//     }
-//   } catch (err) {
-//     console.error(err);
-//   }
-
-//   const data = {
-//     user: req.session.user,
-//     store: req.session.store,
-//     product: req.session.product,
-//     shipment: req.session.shipment
-//   };
-//   res.render("index", data);
-// });
 
 // 상품 입력 Page 열기
 router.get("/itemManage", (req, res) => {
+    if (req.session.user != undefined) {
 
-    const data = {
-        user: req.session.user,
-        store: req.session.store,
-        product: req.session.product,
-        ship: req.session.shipment
+        const data = {
+            user: req.session.user,
+            store: req.session.store,
+            product: req.session.product,
+            ship: req.session.shipment
+        }
+        console.log(data);
+        res.render("itemManage", data);
+
+    } else {
+        res.redirect("/login");
     }
-    console.log(data);
-    res.render("itemManage", data);
 });
 
 //마이페이지
 router.get("/myPage", (req, res) => {
-    const data = {
-        user: req.session.user,
-        store: req.session.store,
-        product: req.session.product,
-        ship: req.session.shipment
+    if (req.session.user != undefined) {
+
+        const data = {
+            user: req.session.user,
+            store: req.session.store,
+            product: req.session.product,
+            ship: req.session.shipment
+        }
+        res.render("myPage", data);
+    } else {
+        res.redirect("/login");
     }
-    res.render("myPage", data);
 });
 
 // 회원가입 Page 열기
