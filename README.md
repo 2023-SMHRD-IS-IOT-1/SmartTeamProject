@@ -76,3 +76,24 @@ DB 유저명
 ![image](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/4e23a3ea-e74b-4ac6-8c55-6885d7cfdbde)
 
 ## 📈 ER 다이어그램
+![스마트하조_231011_데이터 베이스 ERD](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/0079f915-dad0-4890-8d65-e5c17582885e)
+
+## 🖥 화면구성
+로그인 화면
+회원가입 화면
+메인화면
+상품입력화면
+회원정보화면
+
+## 👨‍👩‍👦‍👦 팀원역할
+
+
+## 🎞 시연영상
+
+## 🧾 참고문헌
+[제안배경-유사제품]  
+출처:  https://tagapro.com/project-post/shelfx/  
+출처: https://www.sosit.kr/rfid-reader-etc/?idx=375  
+{제안배경-시장분석]  
+출처: https://www.sisajournal-e.com/news/articleView.html?idxno=301739  
+출처: https://biz.chosun.com/site/data/html_dir/2019/09/09/2019090902000.html
