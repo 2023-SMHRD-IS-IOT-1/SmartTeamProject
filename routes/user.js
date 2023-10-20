@@ -299,5 +299,57 @@ router.get("/itemManage", (req, res) => {
 })
 
 
+// 상품입력 페이지: 목록 삭제
+router.post("/deleteItem", (req, res) => {
+	console.log(req.body);
+	let del_data = req.body.data;
+	let sql_delete = "DELETE FROM products WHERE p_code IN("
+	for (let i = 0; i < del_data.length; i++) {
+		sql_delete += "?"
+		if (i !== del_data.length - 1) {
+			sql_delete += ","
+		}
+	}
+	sql_delete += ") "
+	console.log(sql_delete);
+	conn.query(sql_delete, del_data, (err, rows) => {
+		if (err) {
+			console.error('SQLselect 에러:', err);
+			res.json({ fail: "fail" });
+		} else {
+			res.json({ success: "success" });
+		}
+	})
+
+})
+
+
+// 상품입력 페이지: 목록 수정
+router.post('/update', (req, res) => {
+	console.log('목록 수정 받은 데이터', req.body);
+	//    let update_data=req.body.data
+	let { p_name, p_code, p_weight, p_category, shelf_loc } = req.body
+	let sql_update = "UPDATE products SET p_name=?, p_weight=?,p_category=?,shelf_loc=? WHERE p_code =?"
+
+	conn.query(sql_update, [p_name, p_weight, p_category, shelf_loc, p_code], (err, rows) => {
+		if (err) {
+			console.error('SQLselect 에러:', err);
+			res.send(`
+		<script>
+				alert('수정에 실패했습니다!');
+				location.href="/user/itemManage"
+				</script>
+		`)
+		} else {
+			res.send(`
+		<script>
+				alert('상품 정보를 수정했습니다!');
+				location.href="/user/itemManage"
+				</script>
+		`)
+			// res.redirect("/user/itemManage");
+		}
+	})
+})
 
 module.exports = router;

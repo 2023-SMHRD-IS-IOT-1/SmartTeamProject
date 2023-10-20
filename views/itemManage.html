@@ -21,24 +21,24 @@
                                 <form class="user mg" action="/user/itemManage" method="post">
                                     <div class="form-group">
                                         <input type="text" class="form-control form-control-user" name="p_name"
-                                            id="p_name" placeholder="상품 이름">
+                                            id="p_name" placeholder="상품 이름" value="{{p_name}}">
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
                                             <input type="text" class="form-control form-control-user" name="p_weight"
-                                                id="p_weight" placeholder="상품 무게">
+                                                id="p_weight" placeholder="상품 무게" value="{{p_weight}}">
                                         </div>
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control form-control-user" name="p_category"
-                                                id="p_category" placeholder="상품 카테고리">
+                                                id="p_category" placeholder="상품 카테고리" value="{{p_category}}">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <input type="text" class="form-control form-control-user" name="shelf_loc"
-                                            id="shelf_loc" placeholder="선반 위치">
+                                            id="shelf_loc" placeholder="선반 위치" value="{{shelf_loc}}">
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                    <button id='changebtn' type="submit" class="btn btn-primary btn-user btn-block">
                                         정보 입력
                                     </button>
                                 </form>
@@ -64,6 +64,7 @@
                             <table class="table table-bordered table table-striped" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
+                                        <th>선택</th>
                                         <th>제품명</th>
                                         <th>제품 코드</th>
                                         <th>제품 무게</th>
@@ -74,18 +75,21 @@
                                 </thead>
                                 <tbody>
                                     {% for item in product %}
-                                    <tr>
-                                        <td>{{item.p_name}}</td>
-                                        <td>{{item.p_code}}</td>
+                                    <tr >
+                                        <td><input type="checkbox" value='{{item.p_code}}' ></td>
+                                        <td>{{ item.p_name }}</td>
+                                        <td>{{ item.p_code }}</td>
                                         <td>{{ item.p_weight }}</td>
                                         <td>{{ item.p_cnt }}</td>
                                         <td>{{ item.p_category }}</td>
                                         <td>{{ item.shelf_loc }}</td>
                                     </tr>
                                     {% endfor %}
+                                    
                                 </tbody>
                             </table>
-                            <!-- </form> -->
+                            <button class="btn btn-primary btn-user" onclick="changebutton()">수정</button>
+                            <button id="deleteButton" onclick="deleteSelected()" class="btn btn-primary btn-user">삭제</button>
                         </div>
                     </div>
                 </div>
