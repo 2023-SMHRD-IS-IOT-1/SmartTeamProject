@@ -39,7 +39,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + "/public"));
 
-// 세션 설정
+// 세션 설정 백업
 /* app.use(
   session({
     saveUninitialized: false,
