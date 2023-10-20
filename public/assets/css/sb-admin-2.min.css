@@ -8700,7 +8700,8 @@ button.bg-dark:hover {
 
 .pt-4,
 .py-4 {
-    padding-top: 1.5rem !important
+    /* padding-top: 1.5rem !important */
+    margin-top: 70px;
 }
 
 .pr-4,
