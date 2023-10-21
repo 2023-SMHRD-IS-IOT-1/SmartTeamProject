@@ -1628,6 +1628,7 @@ pre code {
     }
 
     .col-xl-4 {
+        display: flex;
         flex: 0 0 33.33333%;
         max-width: 33.33333%
     }
@@ -8564,7 +8565,8 @@ button.bg-dark:hover {
 
 .mb-4,
 .my-4 {
-    margin-bottom: 1.5rem !important
+    margin-bottom: 1.5rem !important;
+    flex: 100%;
 }
 
 .ml-4,
@@ -8698,7 +8700,8 @@ button.bg-dark:hover {
 
 .pt-4,
 .py-4 {
-    padding-top: 1.5rem !important
+    /* padding-top: 1.5rem !important */
+    margin-top: 70px;
 }
 
 .pr-4,

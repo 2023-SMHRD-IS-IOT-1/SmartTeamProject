@@ -2,7 +2,128 @@
 
 <!DOCTYPE html>
 <html lang="en">
+</script>
 
+<!-- 시간 그래프 -->
+<script>
+    function graphFunction(data) {
+var ctx = document.getElementById('myAreaChart').getContext('2d');
+
+if (myLineChart) {
+// 이미 그래프가 있다면 파괴하고 재생성
+myLineChart.destroy();
+}
+
+var myLineChart = new Chart(ctx, {
+type: 'line',
+data: {
+labels: ["00시", "04시", "08시", "12시", "16시", "20시", "24시"],
+datasets: [{
+label: "판매량",
+lineTension: 0.3,
+backgroundColor: "rgba(78, 115, 223, 0.05)",
+borderColor: "rgba(78, 115, 223, 1)",
+pointRadius: 3,
+pointBackgroundColor: "rgba(78, 115, 223, 1)",
+pointBorderColor: "rgba(78, 115, 223, 1)",
+pointHoverRadius: 3,
+pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+pointHitRadius: 10,
+pointBorderWidth: 2,
+data: data,
+}],
+},
+options: {
+maintainAspectRatio: false,
+layout: {
+padding: {
+  left: 10,
+  right: 25,
+  top: 25,
+  bottom: 0
+}
+},
+scales: {
+xAxes: [{
+  time: {
+    unit: 'date'
+  },
+  gridLines: {
+    display: false,
+    drawBorder: false
+  },
+  ticks: {
+    maxTicksLimit: 7
+  }
+}],
+yAxes: [{
+  ticks: {
+    maxTicksLimit: 5,
+    padding: 10,
+    // Include a dollar sign in the ticks
+    callback: function (value, index, values) {
+      return number_format(value) + '개';
+    }
+  },
+  gridLines: {
+    color: "rgb(234, 236, 244)",
+    zeroLineColor: "rgb(234, 236, 244)",
+    drawBorder: false,
+    borderDash: [2],
+    zeroLineBorderDash: [2]
+  }
+}],
+},
+legend: {
+display: false
+},
+tooltips: {
+backgroundColor: "rgb(255,255,255)",
+bodyFontColor: "#858796",
+titleMarginBottom: 10,
+titleFontColor: '#6e707e',
+titleFontSize: 14,
+borderColor: '#dddfeb',
+borderWidth: 1,
+xPadding: 15,
+yPadding: 15,
+displayColors: false,
+intersect: false,
+mode: 'index',
+caretPadding: 10,
+callbacks: {
+  label: function (tooltipItem, chart) {
+    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+    return datasetLabel + ': ' + number_format(tooltipItem.yLabel) + '개';
+  }
+}
+}
+}
+})
+};
+
+    // 서버에서 데이터를 가져오고 그래프 함수 호출
+    async function fetchDataAndGraph() {
+        try {
+            // 서버에서 데이터를 가져옴 (예: /getdata 엔드포인트)
+            const response = await fetch('/getdata');
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
+            const data = await response.json();
+
+            // 데이터를 그래프 함수에 전달
+            graphFunction(data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // 페이지 로드 시 데이터 가져오기
+    window.addEventListener('load', fetchDataAndGraph);
+</script>
+<script src="assets/js/demo/chart-area-demo.js"></script>
 <head>
 
   <meta charset="utf-8">
@@ -246,9 +367,13 @@
         <a class="scroll-to-top rounded" href="#page-top">
           <i class="fas fa-angle-up"></i>
         </a>
+        
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
           crossorigin="anonymous"></script>
+
+        <script src="routes/index.js"></script>
+        <script src="assets/js/demo/chart-area-demo.js"></script>
 
         <script src="assets/js/item.js"></script>
         <!-- Bootstrap core JavaScript-->

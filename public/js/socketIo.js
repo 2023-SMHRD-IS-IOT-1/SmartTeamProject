@@ -27,6 +27,9 @@ socket.on("lowStock", (data) => {
   if (data === 0) {
     badgeCountDom.innerText = ''
     alertsClick.style.pointerEvents = 'none';
+    // 세션 스토리지에 "badgeCount" 값 저장
+    sessionStorage.setItem("badgeCount", '');
+
   } else if (data != parseInt(badgeCountDom.innerText)) {
     badgeCountDom.innerText = data
     alertsClick.style.pointerEvents = 'auto';
