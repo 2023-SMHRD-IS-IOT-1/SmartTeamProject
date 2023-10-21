@@ -13,65 +13,64 @@
 
 	<div class="row">
 
-        <!-- Area Chart -->
-        <div class="col-xl-8 col-lg-7">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">재고 현황</h5>
-                   
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div class="chart-area ">
-                        <div class="row ">
+		<!-- Area Chart -->
+		<div class="col-xl-8 col-lg-7">
+			<div class="card shadow mb-4">
+				<!-- Card Header - Dropdown -->
+				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+					<h5 class="m-0 font-weight-bold text-primary">재고 현황</h5>
 
-                                <!-- Earnings (Monthly) Card Example -->
-                                {% for item in product %}
-                                <div class="col-xl-3 col-md-6 mb-4 ">
-                                    <div class="card border-left-primary shadow py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="h7 font-weight-bold text-primary text-uppercase mb-1">
-                                                        {{item.shelf_loc}}번 선반</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ item.p_name }}</div>
-                                                     <div class="h5 mb-0 font-weight-bold text-gray-800 cnt">{{item.p_cnt}}개</div>
-                                                     <h4 class="small font-weight-bold">재고량 <span
-                                                        class="float-right">{{item.p_cnt*10}}%</span></h4>
-                                                        <div class="progress mb-4">
-                                                            <div class="progress-bar {% if item.p_cnt < 4 %}bg-danger{% else %}text-primary{% endif %}" role="progressbar"
-                                                                style="width: {{item.p_cnt * 10}}%" aria-valuenow="{{item.p_cnt*10}}" aria-valuemin="0"
-                                                                aria-valuemax="100"></div>
-                                                                <!-- text-primary: 파랑, bg-danger: 빨강 -->
-                                                        </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor%}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+				</div>
+				<!-- Card Body -->
+				<div class="card-body">
+					<div class="chart-area ">
+						<div class="row ">
 
-        <!-- Pie Chart -->
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h5 class="m-0 font-weight-bold text-primary">Revenue Sources</h5>
-                   
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
-                        <canvas id="myPieChart"></canvas>
-                    </div>
-                    <div class="mt-4 text-center small">
-                        <!-- <span class="mr-2">
+							<!-- Earnings (Monthly) Card Example -->
+							{% for item in product %}
+							<div class="col-xl-3 col-md-6 mb-4 ">
+								<div class="card border-left-primary shadow py-2">
+									<div class="card-body">
+										<div class="row no-gutters align-items-center">
+											<div class="col mr-2">
+												<div class="h7 font-weight-bold text-primary text-uppercase mb-1">
+													{{item.shelf_loc}}번 선반</div>
+												<div class="h5 mb-0 font-weight-bold text-gray-800">{{ item.p_name }}</div>
+												<div class="h5 mb-0 font-weight-bold text-gray-800 cnt">{{item.p_cnt}}개</div>
+												<h4 class="small font-weight-bold">재고량 <span class="float-right">{{item.p_cnt*10}}%</span></h4>
+												<div class="progress mb-4">
+													<div class="progress-bar {% if item.p_cnt < 4 %}bg-danger{% else %}text-primary{% endif %}"
+														role="progressbar" style="width: {{item.p_cnt * 10}}%" aria-valuenow="{{item.p_cnt*10}}"
+														aria-valuemin="0" aria-valuemax="100"></div>
+													<!-- text-primary: 파랑, bg-danger: 빨강 -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endfor%}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Pie Chart -->
+		<div class="col-xl-4 col-lg-5">
+			<div class="card shadow mb-4">
+				<!-- Card Header - Dropdown -->
+				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+					<h5 class="m-0 font-weight-bold text-primary">Revenue Sources</h5>
+
+				</div>
+				<!-- Card Body -->
+				<div class="card-body">
+					<div class="chart-pie pt-4 pb-2">
+						<canvas id="myPieChart"></canvas>
+					</div>
+					<div class="mt-4 text-center small">
+						<!-- <span class="mr-2">
                             <i class="fas fa-circle text-primary"></i> Direct
                         </span>
                         <span class="mr-2">
@@ -96,8 +95,7 @@
 					<div class="table-responsive">
 						<div class="user mg">
 
-							<table class="table table-bordered table table-striped" id="dataTable" width="100%"
-								cellspacing="0">
+							<table class="table table-bordered table table-striped" id="dataTable" width="100%" cellspacing="0">
 								<thead>
 									<tr>
 										<th>상품 분류</th>
@@ -141,58 +139,58 @@
 	</div>
 
 	<script>
-	// DOMContentLoaded 이벤트를 사용하여 페이지 로드 후 실행
-	document.addEventListener("DOMContentLoaded", () => {
-		fetch("/piechart")
-			.then(response => response.json())
-			.then(data => {
-				let p_codeArray = [];
-				let week_sum_ship_cntArray = [];
+		// DOMContentLoaded 이벤트를 사용하여 페이지 로드 후 실행
+		document.addEventListener("DOMContentLoaded", () => {
+			fetch("/piechart")
+				.then(response => response.json())
+				.then(data => {
+					let p_codeArray = [];
+					let week_sum_ship_cntArray = [];
 
-				data.forEach(item => {
-					p_codeArray.push(item.p_code);
-					week_sum_ship_cntArray.push(item.week_sum_ship_cnt);
-				});
+					data.forEach(item => {
+						p_codeArray.push(item.p_code);
+						week_sum_ship_cntArray.push(item.week_sum_ship_cnt);
+					});
 
-				// 차트 초기화
-				var ctx = document.getElementById("myPieChart").getContext("2d");
-				var myPieChart = new Chart(ctx, {
-					type: "doughnut",
-					data: {
-						labels: p_codeArray,
-						datasets: [{
-						data: week_sum_ship_cntArray,
-							backgroundColor: ["#FF5733", "#FFC300", "#33FF57", "#3363FF", "#FF33E0"],
-						}],
-					},
-					options: {
-						maintainAspectRatio: false,
-						tooltips: {
-							backgroundColor: "rgb(255,255,255)",
-							bodyFontColor: "#858796",
-							borderColor: '#dddfeb',
-							borderWidth: 1,
-							xPadding: 15,
-							yPadding: 15,
-							displayColors: false,
-							caretPadding: 10,
+					// 차트 초기화
+					var ctx = document.getElementById("myPieChart").getContext("2d");
+					var myPieChart = new Chart(ctx, {
+						type: "doughnut",
+						data: {
+							labels: p_codeArray,
+							datasets: [{
+								data: week_sum_ship_cntArray,
+								backgroundColor: ["#FF5733", "#FFC300", "#33FF57", "#3363FF", "#FF33E0"],
+							}],
 						},
-						cutoutPercentage: 80,
-						plugins: {
-							legend: {
-								position: 'bottom' // 라벨 위치를 아래로 설정
+						options: {
+							maintainAspectRatio: false,
+							tooltips: {
+								backgroundColor: "rgb(255,255,255)",
+								bodyFontColor: "#858796",
+								borderColor: '#dddfeb',
+								borderWidth: 1,
+								xPadding: 15,
+								yPadding: 15,
+								displayColors: false,
+								caretPadding: 10,
+							},
+							cutoutPercentage: 80,
+							plugins: {
+								legend: {
+									position: 'bottom' // 라벨 위치를 아래로 설정
+								}
 							}
 						}
-					}
-				});
+					});
 
-				// 도넛 차트 업데이트
-				myPieChart.update();
-			})
-			.catch(error => {
-				console.error("데이터 가져오기 오류:", error);
-			});
-	});
+					// 도넛 차트 업데이트
+					myPieChart.update();
+				})
+				.catch(error => {
+					console.error("데이터 가져오기 오류:", error);
+				});
+		});
 	</script>
 
 	{% endblock %}
