@@ -13,6 +13,6 @@ let conn = mysql.createConnection({
 });
 conn.connect();
 
-
+conn.end();
 module.exports = conn;
 // 내 mysql 정보를 가지고 연결한 conn을 모듈화하겠다!
