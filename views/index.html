@@ -103,7 +103,7 @@
                                 cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>상품 분류</th>
+                                        <th>선반 위치</th>
                                         <th>제품명</th>
                                         <th>재고량</th>
                                         <th>주간 누적 판매량</th>
@@ -113,7 +113,7 @@
                                 <tbody>
                                     {% for p_item in product%}
                                     <tr>
-                                        <td>{{ p_item.p_category }}</td>
+                                        <td>{{ p_item.shelf_loc }}</td>
                                         <td>{{ p_item.p_name }}</td>
                                         <td>{{ p_item.p_cnt }}</td>
                                         <td>
