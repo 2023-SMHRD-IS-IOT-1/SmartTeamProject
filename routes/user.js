@@ -15,7 +15,7 @@ const conn = require("../config/database");
 router.post("/register", (req, res) => {
   let { m_id, m_pw, m_pw2, m_name, m_phone, store_name, store_owner, store_phone, store_loc } = req.body;
   console.log('가입', req.body)
-  let sql_m = "insert into members(m_id, m_pw, m_name, m_phone) values(?,?,?,?)";
+  let sql_m = "insert into members(m_id, m_pw, m_name, m_phone) values(?,SHA1(?),?,?)";
   let sql_s = "insert into stores(store_name, store_owner, store_phone, store_loc, m_id) values(?,?,?,?,?)";
 
   if (m_id && m_pw && m_name && m_phone) {
@@ -79,7 +79,7 @@ router.post("/login", (req, res) => {
 
   // 2. 그 데이터들을 각각 id, pw 변수 안에 저장
   // 3. DB 연동해서 해당 id값과 pw값이 일치하는 데이터가 DB에 있는지 확인한다
-  let sql_m = 'select * from members where m_id=? and m_pw=?'
+  let sql_m = 'select * from members where m_id=? and m_pw = SHA1(?)'
   let sql_s = 'select * from stores where m_id=?'
   let sql_p = "select * from products where store_code=?"
   let sql_ship = 'select * from shipments where p_code=?'
@@ -141,7 +141,7 @@ router.post("/myPage", (req, res) => {
 
     console.log('회원정보 수정', req.body);
     let sql_s = "update stores set store_name = ?, store_owner=?, store_phone=?, store_loc=? where m_id=?";
-    let sql_m = "update members set m_pw = ?, m_name = ?, m_phone = ? where m_id = ?"
+    let sql_m = "update members set m_pw = SHA1(?), m_name = ?, m_phone = ? where m_id = ?"
 
     let sql_p = 'select * from products where store_code=?'
     // let sql_ship = 'select * from shipments where p_code=?'
@@ -301,55 +301,55 @@ router.get("/itemManage", (req, res) => {
 
 // 상품입력 페이지: 목록 삭제
 router.post("/deleteItem", (req, res) => {
-	console.log(req.body);
-	let del_data = req.body.data;
-	let sql_delete = "DELETE FROM products WHERE p_code IN("
-	for (let i = 0; i < del_data.length; i++) {
-		sql_delete += "?"
-		if (i !== del_data.length - 1) {
-			sql_delete += ","
-		}
-	}
-	sql_delete += ") "
-	console.log(sql_delete);
-	conn.query(sql_delete, del_data, (err, rows) => {
-		if (err) {
-			console.error('SQLselect 에러:', err);
-			res.json({ fail: "fail" });
-		} else {
-			res.json({ success: "success" });
-		}
-	})
+  console.log(req.body);
+  let del_data = req.body.data;
+  let sql_delete = "DELETE FROM products WHERE p_code IN("
+  for (let i = 0; i < del_data.length; i++) {
+    sql_delete += "?"
+    if (i !== del_data.length - 1) {
+      sql_delete += ","
+    }
+  }
+  sql_delete += ") "
+  console.log(sql_delete);
+  conn.query(sql_delete, del_data, (err, rows) => {
+    if (err) {
+      console.error('SQLselect 에러:', err);
+      res.json({ fail: "fail" });
+    } else {
+      res.json({ success: "success" });
+    }
+  })
 
 })
 
 
 // 상품입력 페이지: 목록 수정
 router.post('/update', (req, res) => {
-	console.log('목록 수정 받은 데이터', req.body);
-	//    let update_data=req.body.data
-	let { p_name, p_code, p_weight, p_category, shelf_loc } = req.body
-	let sql_update = "UPDATE products SET p_name=?, p_weight=?,p_category=?,shelf_loc=? WHERE p_code =?"
+  console.log('목록 수정 받은 데이터', req.body);
+  //    let update_data=req.body.data
+  let { p_name, p_code, p_weight, p_category, shelf_loc } = req.body
+  let sql_update = "UPDATE products SET p_name=?, p_weight=?,p_category=?,shelf_loc=? WHERE p_code =?"
 
-	conn.query(sql_update, [p_name, p_weight, p_category, shelf_loc, p_code], (err, rows) => {
-		if (err) {
-			console.error('SQLselect 에러:', err);
-			res.send(`
+  conn.query(sql_update, [p_name, p_weight, p_category, shelf_loc, p_code], (err, rows) => {
+    if (err) {
+      console.error('SQLselect 에러:', err);
+      res.send(`
 		<script>
 				alert('수정에 실패했습니다!');
 				location.href="/user/itemManage"
 				</script>
 		`)
-		} else {
-			res.send(`
+    } else {
+      res.send(`
 		<script>
 				alert('상품 정보를 수정했습니다!');
 				location.href="/user/itemManage"
 				</script>
 		`)
-			// res.redirect("/user/itemManage");
-		}
-	})
+      // res.redirect("/user/itemManage");
+    }
+  })
 })
 
 module.exports = router;

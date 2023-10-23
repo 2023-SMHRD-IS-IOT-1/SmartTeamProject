@@ -21,9 +21,11 @@ router.get("/", async (req, res) => {
                             SUM(shipments.ship_cnt) AS week_sum_ship_cnt
                         FROM products
                         JOIN shipments ON products.p_code = shipments.p_code
-                        WHERE shipments.ship_date >= DATE_ADD(CURDATE(), INTERVAL -7 DAY) AND products.p_code = ?
+                        WHERE shipments.ship_date >= DATE_ADD(CURDATE(), INTERVAL -7 DAY) AND products.p_code = ? AND shipments.ship_type = 'O'
                         GROUP BY products.p_code, products.p_name;`
-    let sql_ship_month = 'SELECT SUM(ship_cnt) AS month_sum_ship_cnt, p_code FROM shipments WHERE p_code = ? AND ship_date >= DATE_ADD(CURDATE(), INTERVAL -30 DAY);'
+    let sql_ship_month = `SELECT SUM(ship_cnt) AS month_sum_ship_cnt, p_code 
+                          FROM shipments 
+                          WHERE p_code = ? AND ship_date >= DATE_ADD(CURDATE(), INTERVAL -30 DAY) AND shipments.ship_type = 'O';`
 
 
     let { store_code } = req.session.store
@@ -33,6 +35,7 @@ router.get("/", async (req, res) => {
     };
     try {
       const p_rows = await queryAsync(conn, sql_p, [store_code]);
+      p_rows.sort((a, b) => (a.shelf_loc > b.shelf_loc) ? 1 : -1);
       req.session.product = p_rows;
       data.product = p_rows;
       // console.log('메인화면/ 상품: ', req.session.product);
@@ -72,43 +75,46 @@ router.get("/", async (req, res) => {
 
 // 원그래프
 router.get("/piechart", async (req, res) => {
-  let sql_p = "select * from products where store_code=?";
-  let store_code = req.session.store.store_code;
-  let shipment_week_n = [];
-  let shipment_week_d = [];
-  const p_rows = await queryAsync(conn, sql_p, [store_code]);
+  if (req.session.store != undefined) {
+    let sql_p = "select * from products where store_code=?";
+    let store_code = req.session.store.store_code;
+    let shipment_week_n = [];
+    let shipment_week_d = [];
+    const p_rows = await queryAsync(conn, sql_p, [store_code]);
 
-  for (let i = 0; i < p_rows.length; i++) {
-    let p_code = p_rows[i].p_code;
-    let sql_ship_week = `
+    for (let i = 0; i < p_rows.length; i++) {
+      let p_code = p_rows[i].p_code;
+      let sql_ship_week = `
       SELECT products.p_name, SUM(shipments.ship_cnt) AS week_sum_ship_cnt
       FROM products
       JOIN shipments ON products.p_code = shipments.p_code
       WHERE shipments.ship_date >= DATE_ADD(CURDATE(), INTERVAL -7 DAY)
-      AND products.p_code = ?
+      AND products.p_code = ? AND shipments.ship_type = 'O'
       GROUP BY products.p_name;
     `;
 
-    const ship_rows_week = await queryAsync(conn, sql_ship_week, [p_code]);
-    console.log("ship_rows_week: ", ship_rows_week);
-    for (let j = 0; j < ship_rows_week.length; j++) {
-      shipment_week_n.push(ship_rows_week[j].p_name);
-      shipment_week_d.push(ship_rows_week[j].week_sum_ship_cnt);
+      const ship_rows_week = await queryAsync(conn, sql_ship_week, [p_code]);
+      console.log("ship_rows_week: ", ship_rows_week);
+      for (let j = 0; j < ship_rows_week.length; j++) {
+        shipment_week_n.push(ship_rows_week[j].p_name);
+        shipment_week_d.push(ship_rows_week[j].week_sum_ship_cnt);
+      }
     }
-  }
-console.log("shipment_week_n:", shipment_week_n);
-console.log("shipment_week_d:", shipment_week_d);
-  const data = {
-    ship_rows_week_n: shipment_week_n,
-    shipment_week_d: shipment_week_d
-  };
+    console.log("shipment_week_n:", shipment_week_n);
+    console.log("shipment_week_d:", shipment_week_d);
+    const data = {
+      ship_rows_week_n: shipment_week_n,
+      shipment_week_d: shipment_week_d
+    };
 
-  res.json(data);
+    res.json(data);
+  }
 });
 // console.log( "index.js 차트용 : ",req.session.shipment_week ) 
 
 // 꺾은선 그래프
 router.get("/getshipment", async (req, res) => {
+  if (req.session.store != undefined) {
   let store_code = req.session.store.store_code;
   let sql_ship_time = `SELECT
                   time_intervals.time_interval,
@@ -135,6 +141,7 @@ router.get("/getshipment", async (req, res) => {
                   FROM shipments
                   WHERE DATE(ship_date) = CURDATE()
                   AND p_code IN (select p_code from products where store_code= ? )
+                  AND ship_type = 'O'
               ) AS shipments
               ON time_intervals.time_interval = shipments.time_interval
               GROUP BY time_intervals.time_interval
@@ -153,25 +160,11 @@ router.get("/getshipment", async (req, res) => {
     ship_rows_time_list.push(ship_rows_time[i].total_sales)
   }
   res.json(ship_rows_time_list);
-
+}
 })
 
 // 유틸리티 함수로 쿼리 실행을 Promise로 감싸기
 function queryAsync(connection, sql, params) {
-  return new Promise((resolve, reject) => {
-    connection.query(sql, params, (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
-      }
-    });
-  });
-}
-
-// 유틸리티 함수로 쿼리 실행을 Promise로 감싸기
-function queryAsync(connection, sql, params) {
-  // 비동기 실행
   return new Promise((resolve, reject) => {
     connection.query(sql, params, (err, result) => {
       if (err) {

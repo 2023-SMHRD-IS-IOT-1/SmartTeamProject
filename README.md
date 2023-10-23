@@ -71,6 +71,7 @@ DB 유저명
 ## ⚙ 시스템아키텍쳐
 
 ## 🖋 유스케이스
+![image](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/fe6f11a5-4104-4915-9938-7a824ac97ab5)
 
 ## 🖋 서비스흐름도
 ![image](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/4e23a3ea-e74b-4ac6-8c55-6885d7cfdbde)
@@ -80,10 +81,19 @@ DB 유저명
 
 ## 🖥 화면구성
 로그인 화면  
+![로그인](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/94529e25-fa37-4924-bfce-9b5e891bc384)  
+
 회원가입 화면  
+![회원가입](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/5667c4e6-9756-43ae-94b0-322aa5abd9e2)  
+
 메인화면  
+![메인](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/9adf712c-f012-4a3e-8a6f-46d9d75cd23e)  
+
 상품입력화면  
+![상품입력](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/001940f8-da1c-45eb-bce5-87e53987fcf5)  
+
 회원정보화면  
+![회원정보](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/6915b420-d84b-492c-8a63-0a73f859d88d)  
 
 ## 👨‍👩‍👦‍👦 팀원역할
 
