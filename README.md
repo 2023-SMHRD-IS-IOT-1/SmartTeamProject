@@ -31,7 +31,7 @@ DB 유저명
 ## 👀 서비스 소개
 서비스명 : 무게센서를 활용한 Iot 선반  
 서비스 설명: 선반에 있는 물건의 무게를 측정하여 재고가 부족할 시 관리자에게 알림을 주고 데이터분석을 통해 시각적으로 제품의 판매량을 알려준다.
-## 프로젝트 기간
+## 📅프로젝트 기간
 2023.10.06 ~ 2023.10.24 (2주)
 ## 👍 주요기능
 - 선반의 위치에 따른 재고 부족시 그 선반위치의 제품이 부족하다고 알림 
@@ -80,19 +80,19 @@ DB 유저명
 ![스마트하조_231011_데이터 베이스 ERD](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/0079f915-dad0-4890-8d65-e5c17582885e)
 
 ## 🖥 화면구성
-로그인 화면  
+### 로그인 화면  
 ![로그인](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/94529e25-fa37-4924-bfce-9b5e891bc384)  
 
-회원가입 화면  
+### 회원가입 화면  
 ![회원가입](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/5667c4e6-9756-43ae-94b0-322aa5abd9e2)  
 
-메인화면  
+### 메인화면  
 ![메인](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/9adf712c-f012-4a3e-8a6f-46d9d75cd23e)  
 
-상품입력화면  
+### 상품입력화면  
 ![상품입력](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/001940f8-da1c-45eb-bce5-87e53987fcf5)  
 
-회원정보화면  
+### 회원정보화면  
 ![회원정보](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/6915b420-d84b-492c-8a63-0a73f859d88d)  
 
 ## 👨‍👩‍👦‍👦 팀원역할
