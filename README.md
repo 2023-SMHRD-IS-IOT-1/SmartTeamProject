@@ -71,6 +71,7 @@ DB 유저명
 ## ⚙ 시스템아키텍쳐
 
 ## 🖋 유스케이스
+![image](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/fe6f11a5-4104-4915-9938-7a824ac97ab5)
 
 ## 🖋 서비스흐름도
 ![image](https://github.com/2023-SMHRD-IS-IOT-1/SmartTeamProject/assets/146160350/4e23a3ea-e74b-4ac6-8c55-6885d7cfdbde)
