@@ -141,7 +141,7 @@ router.post("/myPage", (req, res) => {
 
     console.log('회원정보 수정', req.body);
     let sql_s = "update stores set store_name = ?, store_owner=?, store_phone=?, store_loc=? where m_id=?";
-    let sql_m = "update members set m_pw = ?, m_name = ?, m_phone = ? where m_id = ?"
+    let sql_m = "update members set m_pw = SHA1(?), m_name = ?, m_phone = ? where m_id = ?"
 
     let sql_p = 'select * from products where store_code=?'
     // let sql_ship = 'select * from shipments where p_code=?'

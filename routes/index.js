@@ -33,6 +33,7 @@ router.get("/", async (req, res) => {
     };
     try {
       const p_rows = await queryAsync(conn, sql_p, [store_code]);
+      p_rows.sort((a, b) => (a.shelf_loc > b.shelf_loc) ? 1 : -1);
       req.session.product = p_rows;
       data.product = p_rows;
       // console.log('메인화면/ 상품: ', req.session.product);
