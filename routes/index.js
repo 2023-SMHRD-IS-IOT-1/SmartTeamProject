@@ -21,9 +21,11 @@ router.get("/", async (req, res) => {
                             SUM(shipments.ship_cnt) AS week_sum_ship_cnt
                         FROM products
                         JOIN shipments ON products.p_code = shipments.p_code
-                        WHERE shipments.ship_date >= DATE_ADD(CURDATE(), INTERVAL -7 DAY) AND products.p_code = ?
+                        WHERE shipments.ship_date >= DATE_ADD(CURDATE(), INTERVAL -7 DAY) AND products.p_code = ? AND shipments.ship_type = 'O'
                         GROUP BY products.p_code, products.p_name;`
-    let sql_ship_month = 'SELECT SUM(ship_cnt) AS month_sum_ship_cnt, p_code FROM shipments WHERE p_code = ? AND ship_date >= DATE_ADD(CURDATE(), INTERVAL -30 DAY);'
+    let sql_ship_month = `SELECT SUM(ship_cnt) AS month_sum_ship_cnt, p_code 
+                          FROM shipments 
+                          WHERE p_code = ? AND ship_date >= DATE_ADD(CURDATE(), INTERVAL -30 DAY) AND shipments.ship_type = 'O';`
 
 
     let { store_code } = req.session.store
@@ -87,7 +89,7 @@ router.get("/piechart", async (req, res) => {
       FROM products
       JOIN shipments ON products.p_code = shipments.p_code
       WHERE shipments.ship_date >= DATE_ADD(CURDATE(), INTERVAL -7 DAY)
-      AND products.p_code = ?
+      AND products.p_code = ? AND shipments.ship_type = 'O'
       GROUP BY products.p_name;
     `;
 
@@ -139,6 +141,7 @@ router.get("/getshipment", async (req, res) => {
                   FROM shipments
                   WHERE DATE(ship_date) = CURDATE()
                   AND p_code IN (select p_code from products where store_code= ? )
+                  AND ship_type = 'O'
               ) AS shipments
               ON time_intervals.time_interval = shipments.time_interval
               GROUP BY time_intervals.time_interval
