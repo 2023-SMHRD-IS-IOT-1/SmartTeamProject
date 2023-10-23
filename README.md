@@ -102,7 +102,7 @@ DB 유저명
 
 ## 🧾 참고문헌
 [제안배경-유사제품]  
-출처:  https://tagapro.com/project-post/shelfx/  
+출처: https://www.solumesl.com/ko  
 출처: https://www.sosit.kr/rfid-reader-etc/?idx=375  
 {제안배경-시장분석]  
 출처: https://www.sisajournal-e.com/news/articleView.html?idxno=301739  
