@@ -176,20 +176,6 @@ function queryAsync(connection, sql, params) {
   });
 }
 
-// 유틸리티 함수로 쿼리 실행을 Promise로 감싸기
-function queryAsync(connection, sql, params) {
-  // 비동기 실행
-  return new Promise((resolve, reject) => {
-    connection.query(sql, params, (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
-      }
-    });
-  });
-}
-
 // 상품 입력 Page 열기
 router.get("/itemManage", (req, res) => {
   if (req.session.user != undefined || req.session.store != undefined) {
